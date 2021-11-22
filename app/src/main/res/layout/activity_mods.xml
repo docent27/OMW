@@ -35,6 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/tab_resources" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/tab_groundcovers" />
     </com.google.android.material.tabs.TabLayout>
 
     <ViewFlipper
@@ -50,6 +55,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_resources"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_groundcovers"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </ViewFlipper>
