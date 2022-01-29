@@ -41,8 +41,8 @@ set(GL4ES_VERSION b61f943335e1a871b612744b86972c3bbdb7eab1)
 set(GL4ES_HASH SHA256=2eb0d3e5609529e74394fdba1bf73f02fd6d54ab19ec1a6c117856220141b730)
 
 # https://github.com/OpenMW/osg/releases
-set(OSG_VERSION bbe61c3bc510a4f5bb4aea21cce506519c2d24e6)
-set(OSG_HASH SHA256=62ad80311e9bb96c47b38322d8871118cd9abbc152fd97c7aea67a2b4014601d)
+set(OSG_VERSION ada34a6d38772f684aa70d2eb76549a33edc9a5f)
+#set(OSG_HASH SHA256=62ad80311e9bb96c47b38322d8871118cd9abbc152fd97c7aea67a2b4014601d)
 
 # https://github.com/lz4/lz4/releases
 set(LZ4_VERSION 1.9.3)
@@ -423,7 +423,7 @@ ExternalProject_Add(osg
 
 	URL https://github.com/OpenMW/osg/archive/${OSG_VERSION}.tar.gz
 	# https://github.com/xyzz/openmw-deps/releases/download/v0/OpenSceneGraph-${OSG_VERSION}.tar.gz
-	URL_HASH ${OSG_HASH}
+	# URL_HASH ${OSG_HASH}
 	DOWNLOAD_DIR ${download_dir}
 
 	PATCH_COMMAND ${OSG_PATCH}
