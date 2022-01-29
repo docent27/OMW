@@ -688,4 +688,16 @@
 	<item>2</item>
 	<item>1</item>
     </string-array>
+    <string name="pref_font_size">UI Font size</string>
+    <string name="pref_font_size_default">16</string>
+    <string-array name="pref_font_size_entries">
+	<item>Large 20</item>
+	<item>Large 18</item>
+	<item>Normal 16</item>
+    </string-array>
+    <string-array name="pref_font_size_values">
+	<item>20</item>
+	<item>18</item>
+	<item>16</item>
+    </string-array>
 </resources>

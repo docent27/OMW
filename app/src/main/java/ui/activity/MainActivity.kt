@@ -480,6 +480,7 @@ class MainActivity : AppCompatActivity() {
                 file.Writer.write(Constants.USER_CONFIG + "/settings.cfg", "color topic specific", prefs.getString("pref_color_topic_specific", "true")!!)
                 file.Writer.write(Constants.USER_CONFIG + "/settings.cfg", "color topic exhausted", prefs.getString("pref_color_topic_exhausted", "true")!!)
                 file.Writer.write(Constants.USER_CONFIG + "/settings.cfg", "async nav mesh updater threads", prefs.getString("pref_async_nav_mesh_updater_threads", "true")!!)
+                file.Writer.write(Constants.USER_CONFIG + "/settings.cfg", "font size", prefs.getString("pref_font_size", "true")!!)
 
                 file.Writer.write(Constants.USER_CONFIG + "/settings.cfg", "vsync", (if (prefs.getBoolean("pref_vsync", false)) "true" else "false"))
                 file.Writer.write(Constants.USER_CONFIG + "/settings.cfg", "preload enabled", (if (prefs.getBoolean("pref_preloading", false)) "true" else "false"))

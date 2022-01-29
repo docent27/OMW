@@ -292,6 +292,15 @@
             android:textStyle="bold"
             android:title="@string/pref_uiScaling" />
 
+        <ListPreference
+            android:defaultValue="@string/pref_font_size_default"
+            android:dialogTitle="@string/pref_font_size"
+            android:entries="@array/pref_font_size_entries"
+            android:entryValues="@array/pref_font_size_values"
+            android:key="pref_font_size"
+            android:summary="%s"
+            android:title="@string/pref_font_size" />
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_stretch_menu_background"
