@@ -2,6 +2,8 @@
 
 The author of the original code has discontinued support. You are now on the fork page of this app. I am not ready to give a 100% guarantee that the application will work perfectly for you.
 
+Important information. I am not an official member of the OpenMW. If you have problems with the operation of this application on your smartphone, I earnestly request that you DO NOT REPORT the developers of OpenMW, they do not officially support this port. Please be understanding. Thanks.
+
 There are two steps for building OpenMW for Android. The first step is building C/C++ libraries. The second step is building the Java launcher.
 
 # Prerequisites
