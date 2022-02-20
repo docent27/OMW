@@ -4,11 +4,11 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-export ARCH="arm64"
+export ARCH="arm"
 export CCACHE="false"
 ASAN="false"
 DEPLOY_RESOURCES="true"
-LTO="false"
+LTO="True"
 BUILD_TYPE="release"
 CFLAGS="-fPIC"
 CXXFLAGS="-fPIC -frtti -fexceptions"
@@ -95,7 +95,6 @@ fi
 if [[ $LTO = "true" ]]; then
 	CFLAGS="$CFLAGS -flto=thin"
 	CXXFLAGS="$CXXFLAGS -flto=thin"
-	# emulated-tls should not be needed in ndk r18 https://github.com/android-ndk/ndk/issues/498#issuecomment-327825754
 	LDFLAGS="$LDFLAGS -flto=thin -Wl,-plugin-opt=-emulated-tls -fuse-ld=gold"
 fi
 
