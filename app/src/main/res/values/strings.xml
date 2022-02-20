@@ -285,7 +285,7 @@
         <item>0</item>
     </string-array>
     <string name="pref_async">Async num threads</string>
-    <string name="pref_async_default">1</string>
+    <string name="pref_async_default">2</string>
     <string-array name="pref_async_entries">
 	<item>Two threads</item>
 	<item>One thread</item>
@@ -395,7 +395,7 @@
         <item>-100</item>
     </string-array>
     <string name="pref_target_framerate">Preload target framerate</string>
-    <string name="pref_target_framerate_default">60</string>
+    <string name="pref_target_framerate_default">30</string>
     <string-array name="pref_target_framerate_entries">
 	<item>60 fps</item>
 	<item>30 fps</item>
@@ -405,7 +405,7 @@
         <item>30</item>
     </string-array>
     <string name="pref_small_feature_culling_pixel_size">Small feature culling</string>
-    <string name="pref_small_feature_culling_pixel_size_default">8</string>
+    <string name="pref_small_feature_culling_pixel_size_default">16</string>
     <string-array name="pref_small_feature_culling_pixel_size_entries">
 	<item>Quality</item>
 	<item>Balanced</item>
@@ -429,7 +429,7 @@
         <item>1</item>
     </string-array>
     <string name="pref_preload_num_threads">Preload num threads</string>
-    <string name="pref_preload_num_threads_default">1</string>
+    <string name="pref_preload_num_threads_default">2</string>
     <string-array name="pref_preload_num_threads_entries">
 	<item>Two threads</item>
 	<item>One thread</item>
@@ -489,7 +489,7 @@
         <item>0</item>
     </string-array>
     <string name="pref_object_paging_min_size">Cull objects smaller than this size divided by distance</string>
-    <string name="pref_object_paging_min_size_default">0.03</string>
+    <string name="pref_object_paging_min_size_default">0.05</string>
     <string-array name="pref_object_paging_min_size_entries">
 	<item>Quality</item>
 	<item>Balanced</item>
@@ -627,7 +627,7 @@
 	<item>1024</item>
     </string-array>
     <string name="pref_vertex_lod_mod">Vertex lod mod</string>
-    <string name="pref_vertex_lod_mod_default">0</string>
+    <string name="pref_vertex_lod_mod_default">-3</string>
     <string-array name="pref_vertex_lod_mod_entries">
 	<item>Quality</item>
 	<item>Balanced</item>
@@ -639,7 +639,7 @@
 	<item>-3</item>
     </string-array>
     <string name="pref_composite_map_level">Composite map level</string>
-    <string name="pref_composite_map_level_default">0</string>
+    <string name="pref_composite_map_level_default">-3</string>
     <string-array name="pref_composite_map_level_entries">
 	<item>Quality</item>
 	<item>Balanced</item>
@@ -679,7 +679,7 @@
 	<item>0.3 0.3 0.3 1</item>
     </string-array>
     <string name="pref_async_nav_mesh_updater_threads">Async nav mesh updater threads</string>
-    <string name="pref_async_nav_mesh_updater_threads_default">1</string>
+    <string name="pref_async_nav_mesh_updater_threads_default">2</string>
     <string-array name="pref_async_nav_mesh_updater_threads_entries">
 	<item>Two threads</item>
 	<item>One thread</item>
