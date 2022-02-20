@@ -26,7 +26,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "is.docent27.omw"
+        applicationId "is.docent27.OMW"
         versionCode 47
         versionName "0.47"
 
