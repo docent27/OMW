@@ -12,13 +12,13 @@
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="OpenMW"
+        android:label="OMW"
         android:theme="@style/MyTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name="ui.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="OpenMW"
+            android:label="OMW"
             android:screenOrientation="fullUser">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

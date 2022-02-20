@@ -28,10 +28,9 @@ android {
     defaultConfig {
         applicationId "is.docent27.omw"
         versionCode 47
-        versionName calculateVersion()
+        versionName "0.47"
 
         minSdkVersion 21
-        // Do not update past 29 -- see https://github.com/xyzz/openmw-android/issues/30
         targetSdkVersion 28
 
         ndk {
@@ -73,6 +72,9 @@ android {
             versionNameSuffix "-nightly"
         }
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     applicationVariants.all { variant ->
         variant.outputs.all {
@@ -92,6 +94,9 @@ dependencies {
     implementation "org.jetbrains.anko:anko-sqlite:$anko_version"
 
     implementation 'com.bugsnag:bugsnag-android-ndk:4.+'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
 
     testImplementation 'junit:junit:4.12'
 }
