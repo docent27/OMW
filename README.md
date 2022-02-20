@@ -1,4 +1,4 @@
-# OpenMW for Android, Building (unoficial)
+# OMW (unoficial build openmw for android)
 
 The author of the original code has discontinued support. You are now on the fork page of this app. I am not ready to give a 100% guarantee that the application will work perfectly for you.
 
