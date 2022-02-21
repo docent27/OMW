@@ -93,6 +93,7 @@ class GameActivity : SDLActivity() {
                 Os.setenv("LIBGL_USEVBO", "1", true)
                 Os.setenv("LIBGL_NOHIGHP", "1", true)
                 Os.setenv("LIBGL_NOPSA", "1", true)
+                Os.setenv("OSG_TEXT_SHADER_TECHNIQUE", "ALL", true)
             } catch (e: ErrnoException) {
                 Log.e("OpenMW", "Failed setting environment variables.")
                 e.printStackTrace()
