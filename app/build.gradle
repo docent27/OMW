@@ -26,9 +26,9 @@ android {
     }
 
     defaultConfig {
-        applicationId "is.xyz.omw"
-        versionCode 46
-        versionName calculateVersion()
+        applicationId "is.docent27.omw"
+        versionCode 47
+        versionName "0.47"
 
         minSdkVersion 21
         // Do not update past 29 -- see https://github.com/xyzz/openmw-android/issues/30
@@ -55,7 +55,7 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
-            debuggable true
+            debuggable false
         }
     }
 
@@ -68,7 +68,7 @@ android {
 
         nightly {
             dimension "version"
-            applicationId "is.xyz.omw_nightly"
+            applicationId "is.docent27.omw_nightly"
             versionNameSuffix "-nightly"
         }
     }
@@ -81,9 +81,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     implementation project(':storagechooser')
 
@@ -92,5 +92,5 @@ dependencies {
 
     implementation 'com.bugsnag:bugsnag-android-ndk:4.+'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 }

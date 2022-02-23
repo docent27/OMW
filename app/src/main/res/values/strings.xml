@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OMW</string>
+    <string name="app_name">OpenMW</string>
 
     <string-array name="pref_encoding_entries">
         <item>Central and Eastern European (win1250)</item>
