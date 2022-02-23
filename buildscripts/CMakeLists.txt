@@ -40,21 +40,17 @@ set(MYGUI_HASH SHA256=d1d5f294670ae71f7200ed4b30859018281d8cfd45d6a38d18b97a4aba
 set(GL4ES_VERSION v1.1.4)
 set(GL4ES_HASH SHA256=b565e717c7d192e936bda25f3cb90ad8db398af56414ec08294b6716574c1a6d)
 
-# https://github.com/openscenegraph/OpenSceneGraph/releases
-set(OSG_VERSION 3.6.5)
-set(OSG_HASH SHA256=aea196550f02974d6d09291c5d83b51ca6a03b3767e234a8c0e21322927d1e12)
+# https://github.com/OpenMW/osg/releases
+set(OSG_VERSION ada34a6d38772f684aa70d2eb76549a33edc9a5f)
+set(OSG_HASH SHA256=e1e356a53246c49306408e626df2a00a5e7e550d3d2221748313d83105980ffa)
 
 # https://github.com/lz4/lz4/releases
 set(LZ4_VERSION 1.9.3)
 set(LZ4_HASH SHA256=030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1)
 
-# https://luajit.org/download.html
-set(LUAJIT_VERSION 2.1.0-beta3)
-set(LUAJIT_HASH SHA256=1ad2e34b111c802f9d0cdf019e986909123237a28c746b21295b63c9e785d9c3)
-
 # https://github.com/OpenMW/openmw/commits/master
-set(OPENMW_VERSION e92fb245c6af82caf8d660e365c12e2369c76f62)
-set(OPENMW_HASH SHA256=c3a277f718ab8b7760834ee8a55fad32b079b032f4b112b005f038b5afd98994)
+set(OPENMW_VERSION openmw-47)
+set(OPENMW_HASH SHA256=16761609ec153e585efb3c25f20bb7c03f474d8d453e3f3400f900b82b707a5e)
 
 # End of configurable options
 
@@ -305,21 +301,26 @@ ExternalProject_Add(bullet
 	-DBUILD_UNIT_TESTS=OFF
 	-DBUILD_EXTRAS=OFF
 	-DUSE_DOUBLE_PRECISION=ON
+	-DBULLET2_MULTITHREADING=ON
 
 	BUILD_COMMAND ${wrapper_command} $(MAKE)
 
 	INSTALL_COMMAND $(MAKE) install
 )
 
+set(GL4ES_PATCH
+	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/shared-library.patch &&
+	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/gamma.patch &&
+	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/disable-shader-hacks.patch &&
+	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/highp-fog.patch
+)
+
 ExternalProject_Add(gl4es
 	URL https://github.com/ptitSeb/gl4es/archive/${GL4ES_VERSION}.tar.gz
-	https://github.com/xyzz/openmw-deps/releases/download/v0/gl4es-${GL4ES_VERSION}.gz
 	URL_HASH ${GL4ES_HASH}
 	DOWNLOAD_DIR ${download_dir}
 
-	PATCH_COMMAND patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/shared-library.patch
-	COMMAND patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/gamma.patch
-	COMMAND patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/keyword-usage.patch
+	PATCH_COMMAND ${GL4ES_PATCH}
 
 	CONFIGURE_COMMAND ""
 
@@ -343,7 +344,7 @@ ExternalProject_Add(mygui
 
 	CONFIGURE_COMMAND ${wrapper_command} cmake <SOURCE_DIR>
 	${COMMON_CMAKE_ARGS}
-	-DMYGUI_RENDERSYSTEM=ON
+	-DMYGUI_RENDERSYSTEM=4
 	-DMYGUI_BUILD_DEMOS=OFF
 	-DMYGUI_BUILD_TOOLS=OFF
 	-DMYGUI_BUILD_PLUGINS=OFF
@@ -370,35 +371,7 @@ ExternalProject_Add(lz4
 	BUILD_COMMAND ${wrapper_command} $(MAKE)
 
 	INSTALL_COMMAND ${wrapper_command} $(MAKE) install
-)
-
-set(LUAJIT_MAKE_FLAGS
-	HOST_CC=${LUAJIT_HOST_CC}
-	CFLAGS=
-	TARGET_CFLAGS=$ENV{CFLAGS}
-	CROSS=${host}-
-	STATIC_CC=${host}-clang
-	DYNAMIC_CC=${host}-clang\ -fPIC
-	TARGET_LD=${host}-clang
-	PREFIX=${prefix}
-)
-
-ExternalProject_Add(luajit
-	URL https://luajit.org/download/LuaJIT-${LUAJIT_VERSION}.tar.gz
-	URL_HASH ${LUAJIT_HASH}
-	DOWNLOAD_DIR ${download_dir}
-
-	BUILD_IN_SOURCE 1
-
-	CONFIGURE_COMMAND ""
-
-	BUILD_COMMAND ${wrapper_command} $(MAKE) amalg
-	${LUAJIT_MAKE_FLAGS}
-
-	INSTALL_COMMAND ${wrapper_command} $(MAKE) install
-	${LUAJIT_MAKE_FLAGS}
-	COMMAND bash -c "rm ${prefix}/lib/libluajit*.so*"
-)
+	)
 
 set(OSG_COMMON
 	-DOPENGL_PROFILE="GL1"
@@ -438,14 +411,14 @@ set(OSG_PATCH
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/osg/0001-Replace-Atomic-impl-with-std-atomic.patch &&
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/osg/0002-BufferObject-make-numClients-atomic.patch &&
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/osg/0004-IncrementalCompileOperation-wrap-some-stuff-in-atomi.patch &&
+	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/osg/remove-zlib-dependency.patch &&
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/osg/0005-CullSettings-make-inheritanceMask-atomic-to-silence-.patch
 )
 
 ExternalProject_Add(osg
 	DEPENDS libjpeg-turbo libpng gl4es freetype2
 
-	URL https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-${OSG_VERSION}.tar.gz
-	https://github.com/xyzz/openmw-deps/releases/download/v0/OpenSceneGraph-${OSG_VERSION}.tar.gz
+	URL https://github.com/OpenMW/osg/archive/${OSG_VERSION}.tar.gz
 	URL_HASH ${OSG_HASH}
 	DOWNLOAD_DIR ${download_dir}
 
@@ -476,6 +449,7 @@ set(OPENMW_COMMON
 	-DOPENGL_ES=OFF
 	-DOSG_STATIC=TRUE
 	-DMyGUI_LIBRARY=${prefix}/lib/libMyGUIEngineStatic.a
+	-DOPENMW_LTO_BUILD=1
 )
 
 set(OPENMW_PATCH
@@ -490,7 +464,7 @@ set(OPENMW_PATCH
 )
 
 ExternalProject_Add(openmw
-	DEPENDS boost openal osg mygui ffmpeg sdl2 bullet lz4 luajit
+	DEPENDS boost openal osg mygui ffmpeg sdl2 bullet lz4
 
 	URL https://github.com/OpenMW/openmw/archive/${OPENMW_VERSION}.tar.gz
 	URL_HASH ${OPENMW_HASH}

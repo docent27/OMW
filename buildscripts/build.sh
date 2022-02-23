@@ -93,10 +93,9 @@ else
 fi
 
 if [[ $LTO = "true" ]]; then
-	CFLAGS="$CFLAGS -flto"
-	CXXFLAGS="$CXXFLAGS -flto"
-	# emulated-tls should not be needed in ndk r18 https://github.com/android-ndk/ndk/issues/498#issuecomment-327825754
-	LDFLAGS="$LDFLAGS -flto -Wl,-plugin-opt=-emulated-tls -fuse-ld=gold"
+	CFLAGS="$CFLAGS -flto=thin"
+	CXXFLAGS="$CXXFLAGS -flto=thin"
+	LDFLAGS="$LDFLAGS -flto=thin -Wl,-plugin-opt=-emulated-tls -fuse-ld=gold"
 fi
 
 if [[ $ARCH = "arm" ]]; then
@@ -165,7 +164,6 @@ cmake ../.. \
 	-DABI=$ABI \
 	-DBOOST_ARCH=$BOOST_ARCH \
 	-DBOOST_ADDRESS_MODEL=$BOOST_ADDRESS_MODEL \
-	-DLUAJIT_HOST_CC="$LUAJIT_HOST_CC" \
 	-DFFMPEG_CPU=$FFMPEG_CPU
 make -j$NCPU
 
