@@ -69,17 +69,6 @@ class GameActivity : SDLActivity() {
     override fun loadLibraries() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val graphicsLibrary = prefs!!.getString("pref_graphicsLibrary_v2", "")
-        val physicsFPS = prefs!!.getString("pref_physicsFPS2", "")
-        if (!physicsFPS!!.isEmpty()) {
-            try {
-                Os.setenv("OPENMW_PHYSICS_FPS", physicsFPS, true)
-                Os.setenv("OSG_TEXT_SHADER_TECHNIQUE", "NO_TEXT_SHADER", true)
-            } catch (e: ErrnoException) {
-                Log.e("OpenMW", "Failed setting environment variables.")
-                e.printStackTrace()
-            }
-
-        }
 
         System.loadLibrary("c++_shared")
         System.loadLibrary("openal")

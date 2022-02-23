@@ -3,13 +3,11 @@
     <string name="app_name">OpenMW</string>
 
     <string-array name="pref_encoding_entries">
-        <item>Central and Eastern European (win1250)</item>
-        <item>Cyrillic (win1251)</item>
-        <item>Latin (win1252)</item>
+        <item>Английский</item>
+        <item>Русский</item>
     </string-array>
 
     <string-array name="pref_encoding_values">
-        <item>win1250</item>
         <item>win1251</item>
         <item>win1252</item>
     </string-array>
@@ -32,38 +30,37 @@
         <item>halfResolution</item>
     </string-array>
 
-    <string name="general_settings">Setup</string>
+    <string name="general_settings">Основные настройки</string>
     <string name="start_game_label">Start game</string>
     <string name="closeDrawer">Navigation View</string>
     <string name="openDrawer">Navigation View Closed</string>
-    <string name="game_files">Game files</string>
+    <string name="game_files">Файлы игры</string>
 
     <!-- Graphics library -->
-    <string name="pref_graphicsLibrary">Graphics library</string>
+    <string name="pref_graphicsLibrary">Графическая библиотека</string>
     <string name="pref_graphicsLibrary_default">gles2</string>
-    <string name="pref_advanced">Advanced</string>
-    <string name="pref_commandLine">Custom command line arguments</string>
-    <string name="pref_envLine">Custom environment flags</string>
-    <string name="pref_ui">User interface</string>
-    <string name="pref_gamma">Gamma</string>
-    <string name="pref_uiScaling">UI scaling factor</string>
-    <string name="uiScaling_auto">Auto (%1$.2f)</string>
-    <string name="pref_screen_keeper">Keep screen always on</string>
+    <string name="pref_advanced">Дополнительно</string>
+    <string name="pref_commandLine">Коммандная строка</string>
+    <string name="pref_envLine">Переменные среды</string>
+    <string name="pref_ui">Интерфейс</string>
+    <string name="pref_gamma">Гамма</string>
+    <string name="pref_uiScaling">Масштаб интерфейса</string>
+    <string name="uiScaling_auto">Авто (%1$.2f)</string>
+    <string name="pref_screen_keeper">Экран всегда включен</string>
     <string name="pref_touchpadSensitivity">Virtual touchpad sensitivity</string>
-    <string name="action_reset_config">Reset configuration files</string>
+    <string name="action_reset_config">Сборс настроек</string>
     <string name="action_reset_screen_controls">Reset on-screen controls</string>
-    <string name="action_show_screen_controls">On-screen controls…</string>
-    <string name="pref_hide_controls">Hide on-screen buttons</string>
+    <string name="action_show_screen_controls">Экранное управление</string>
+    <string name="pref_hide_controls">Скрыть экранное управление</string>
     <string name="config_was_reset">Configuration was reset to default values</string>
     <string name="pref_lang">Language settings</string>
-    <string name="pref_encoding">Game language</string>
-    <string name="pref_encoding_default">win1252</string>
+    <string name="pref_encoding">Язык</string>
+    <string name="pref_encoding_default">win1251</string>
     <string name="btn_opacityPlus">Alpha+</string>
     <string name="btn_opacityMinus">Alpha-</string>
     <string name="btn_sizePlus">Size+</string>
     <string name="btn_sizeMinus">Size-</string>
     <string name="btn_resetControlsLayout">Reset to defaults</string>
-    <string name="pref_physicsFPS2">Physics FPS</string>
 
     <string-array name="pref_graphicsLibrary_entries">
         <item>GLESv1</item>
@@ -73,11 +70,6 @@
     <string-array name="pref_graphicsLibrary_values">
         <item>gles1</item>
         <item>gles2</item>
-    </string-array>
-
-    <string-array name="pref_physicsFPS2_entries">
-        <item>30</item>
-        <item>60</item>
     </string-array>
 
     <string name="pref_unsafe_state_graph">Enable unsafe graphics optimizations</string>
@@ -103,12 +95,12 @@
         <item>false</item>
     </string-array>
     <string name="pref_preload_default">false</string>
-    <string name="btn_back">Back</string>
-    <string name="pref_customResolution">Custom resolution</string>
-    <string name="mods">Mods…</string>
-    <string name="action_about">About</string>
+    <string name="btn_back">Назад</string>
+    <string name="pref_customResolution">Разрешение экрана</string>
+    <string name="mods">Моды</string>
+    <string name="action_about">О программе</string>
 
-    <string name="about_title">About OMW</string>
+    <string name="about_title">О программе OMW</string>
     <string name="activity_mods">Mods</string>
     <string name="tab_plugins">Plugins</string>
     <string name="tab_resources">Resources</string>
@@ -120,7 +112,7 @@
 
     <string name="no_data_files_title">Data files not found</string>
     <string name="no_data_files_message">You must copy Morrowind game files to your device and select the path under \"Game files\" before the game can be played.</string>
-    <string name="category_performance">Performance</string>
+    <string name="category_performance">Производительность</string>
 
     <string name="no_content_files_title">No content files!</string>
     <string name="no_content_files_message">There are no content files enabled. Before the game can run, you must activate at least one plugin file from the \"Mods…\" menu.</string>
@@ -128,11 +120,11 @@
 
     <string name="configure_mods">Configure mods</string>
 
-    <string name="pref_mouse_mode">Mouse mode in menus</string>
+    <string name="pref_mouse_mode">Режим управления</string>
     <string-array name="pref_mouse_mode_entries">
-        <item>Hybrid</item>
-        <item>Relative joystick controls</item>
-        <item>Absolute touch controls</item>
+        <item>Гибрид</item>
+        <item>Джойстик</item>
+        <item>Тачскрин</item>
     </string-array>
     <string-array name="pref_mouse_mode_values">
         <item>hybrid</item>
@@ -156,18 +148,18 @@
 
     <string name="no_browser_title">Unable to open a URL</string>
     <string name="no_browser_message">You don\'t appear to have a web browser installed. Tried to open the following URL:\n\n%1$s</string>
-    <string name="pref_show_qp">Enable Quick Keys</string>
-    <string name="pref_show_fn">Enable FN keys</string>
-    <string name="pref_always_show_top_bar">Always show top-bar icons</string>
+    <string name="pref_show_qp">Включить быстрые кнопки</string>
+    <string name="pref_show_fn">Включить FN кнопки</string>
+    <string name="pref_always_show_top_bar">Отображать все кнопки</string>
 
-    <string name="pref_debug_level">OpenMW debug level</string>
+    <string name="pref_debug_level">Детализация LOG файла</string>
     <string name="pref_debug_level_default">ERROR</string>
     <string-array name="pref_debug_level_entries">
-	<item>DEBUG</item>
-	<item>VERBOSE</item>
-	<item>INFO</item>
-	<item>WARNING</item>
-	<item>ERROR</item>
+	<item>Отладка</item>
+	<item>Побробно</item>
+	<item>Инфо</item>
+	<item>Предупреждения</item>
+	<item>Выкл</item>
     </string-array>
     <string-array name="pref_debug_level_values">
 	<item>DEBUG</item>
