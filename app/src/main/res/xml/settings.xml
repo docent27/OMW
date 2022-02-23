@@ -48,6 +48,13 @@
             android:hint="1.5"
             />
 
+        <EditTextPreference
+            android:key="pref_customResolution"
+            android:title="@string/pref_customResolution"
+            android:dialogTitle="@string/pref_customResolution"
+            android:hint="640x480"
+            />
+
         <ListPreference
             android:key="pref_mouse_mode"
             android:title="@string/pref_mouse_mode"
@@ -73,13 +80,6 @@
         <CheckBoxPreference
             android:key="pref_show_fn"
             android:title="@string/pref_show_fn" />
-
-        <EditTextPreference
-            android:key="pref_customResolution"
-            android:title="@string/pref_customResolution"
-            android:dialogTitle="@string/pref_customResolution"
-            android:hint="640x480"
-            />
 
         <CheckBoxPreference
             android:key="pref_screen_keeper"
