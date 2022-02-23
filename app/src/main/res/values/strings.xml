@@ -160,4 +160,21 @@
     <string name="pref_show_fn">Enable FN keys</string>
     <string name="pref_always_show_top_bar">Always show top-bar icons</string>
 
+    <string name="pref_debug_level">OpenMW debug level</string>
+    <string name="pref_debug_level_default">ERROR</string>
+    <string-array name="pref_debug_level_entries">
+	<item>DEBUG</item>
+	<item>VERBOSE</item>
+	<item>INFO</item>
+	<item>WARNING</item>
+	<item>ERROR</item>
+    </string-array>
+    <string-array name="pref_debug_level_values">
+	<item>DEBUG</item>
+	<item>VERBOSE</item>
+	<item>INFO</item>
+	<item>WARNING</item>
+	<item>ERROR</item>
+    </string-array>
+
 </resources>

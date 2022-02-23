@@ -88,12 +88,23 @@ class GameActivity : SDLActivity() {
             try {
                 Os.setenv("OPENMW_GLES_VERSION", "2", true)
                 Os.setenv("LIBGL_ES", "2", true)
+                Os.setenv("OSG_VERTEX_BUFFER_HINT", "VBO", true)
+                Os.setenv("LIBGL_NOHIGHP", "1", true)
+                Os.setenv("LIBGL_NOPSA", "1", true)
+                Os.setenv("OSG_TEXT_SHADER_TECHNIQUE", "ALL", true)
             } catch (e: ErrnoException) {
                 Log.e("OpenMW", "Failed setting environment variables.")
                 e.printStackTrace()
             }
 
         }
+
+        val omwDebugLevel = prefs!!.getString("pref_debug_level", "")
+        if (omwDebugLevel == "DEBUG") Os.setenv("OPENMW_DEBUG_LEVEL", "DEBUG", true)
+        if (omwDebugLevel == "VERBOSE") Os.setenv("OPENMW_DEBUG_LEVEL", "VERBOSE", true)
+        if (omwDebugLevel == "INFO") Os.setenv("OPENMW_DEBUG_LEVEL", "INFO", true)
+        if (omwDebugLevel == "WARNING") Os.setenv("OPENMW_DEBUG_LEVEL", "WARNING", true)
+        if (omwDebugLevel == "ERROR") Os.setenv("OPENMW_DEBUG_LEVEL", "ERROR", true)
 
         val envline: String = PreferenceManager.getDefaultSharedPreferences(this).getString("envLine", "").toString()
         if (envline.length > 0) {

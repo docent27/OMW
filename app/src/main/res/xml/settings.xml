@@ -118,6 +118,15 @@
             android:defaultValue="@string/pref_graphicsLibrary_default"
             android:summary="%s"
         />
+
+        <ListPreference
+            android:defaultValue="@string/pref_debug_level_default"
+            android:dialogTitle="@string/pref_debug_level"
+            android:entries="@array/pref_debug_level_entries"
+            android:entryValues="@array/pref_debug_level_values"
+            android:key="pref_debug_level"
+            android:summary="%s"
+            android:title="@string/pref_debug_level" />
     </PreferenceCategory>
 
 </PreferenceScreen>
