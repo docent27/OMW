@@ -22,5 +22,21 @@
             app:showAsAction="never"
             />
 
+        <item
+            android:id="@+id/action_Preset_01"
+            android:title="Низкие настройки"
+            app:showAsAction="never"
+            />
+        <item
+            android:id="@+id/action_Preset_02"
+            android:title="Средние настройки"
+            app:showAsAction="never"
+            />
+        <item
+            android:id="@+id/action_Preset_03"
+            android:title="Высокие настройки"
+            app:showAsAction="never"
+            />
+
     </group>
 </menu>

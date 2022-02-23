@@ -42,13 +42,6 @@
             android:hint="1.5"
             />
 
-        <EditTextPreference
-            android:key="pref_customResolution"
-            android:title="@string/pref_customResolution"
-            android:dialogTitle="@string/pref_customResolution"
-            android:hint="640x480"
-            />
-
         <CheckBoxPreference
             android:key="pref_hide_controls"
             android:title="@string/pref_hide_controls" />

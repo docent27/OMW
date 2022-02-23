@@ -49,7 +49,10 @@
     <string name="action_reset_screen_controls">Reset on-screen controls</string>
     <string name="action_show_screen_controls">Экранное управление</string>
     <string name="pref_hide_controls">Скрыть экранное управление</string>
-    <string name="config_was_reset">Configuration was reset to default values</string>
+    <string name="config_was_reset">Настройки успешно сброшены</string>
+    <string name="config_was_reset01">Выбран пресет с минимальными настройками графики</string>
+    <string name="config_was_reset02">Выбран пресет со средними настройками графики</string>
+    <string name="config_was_reset03">Выбран пресет с максимальными настройками графики</string>
     <string name="pref_lang">Language settings</string>
     <string name="pref_encoding">Язык</string>
     <string name="pref_encoding_default">win1251</string>
@@ -93,14 +96,13 @@
     </string-array>
     <string name="pref_preload_default">false</string>
     <string name="btn_back">Назад</string>
-    <string name="pref_customResolution">Разрешение экрана</string>
     <string name="mods">Моды</string>
     <string name="action_about">О программе</string>
 
     <string name="about_title">О программе OMW</string>
-    <string name="activity_mods">Mods</string>
-    <string name="tab_plugins">Plugins</string>
-    <string name="tab_resources">Resources</string>
+    <string name="activity_mods">Плагины и ресурсы</string>
+    <string name="tab_plugins">Плагины</string>
+    <string name="tab_resources">Ресурсы</string>
     <string name="data_error_title">Error locating data files</string>
     <string name="data_error_message">Please select a directory which contains both the \"Morrowind.ini\" file and the \"Data Files\" directory.</string>
     <string name="permissions_error_title">No permissions</string>

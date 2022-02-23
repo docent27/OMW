@@ -5,7 +5,9 @@
 ##  Gradle start up script for UN*X
 ##
 ##############################################################################
-
+cp patch/settings01.cfg app/src/main/assets/libopenmw/openmw/settings01.cfg
+cp patch/settings02.cfg app/src/main/assets/libopenmw/openmw/settings02.cfg
+cp patch/settings03.cfg app/src/main/assets/libopenmw/openmw/settings03.cfg
 # Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
 DEFAULT_JVM_OPTS=""
 
