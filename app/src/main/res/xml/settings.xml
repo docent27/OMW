@@ -87,15 +87,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_advanced">
-        <EditTextPreference
-            android:key="commandLine"
-            android:title="@string/pref_commandLine"
-            />
-
-        <EditTextPreference
-            android:key="envLine"
-            android:title="@string/pref_envLine"
-            />
 
         <ListPreference
             android:key="pref_graphicsLibrary_v2"

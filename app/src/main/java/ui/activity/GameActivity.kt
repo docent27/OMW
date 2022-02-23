@@ -35,7 +35,6 @@ import org.libsdl.app.SDLActivity
 
 import constants.Constants
 import cursor.MouseCursor
-import parser.CommandlineParser
 import ui.controls.Osc
 
 import utils.Utils.hideAndroidControls
@@ -95,19 +94,6 @@ class GameActivity : SDLActivity() {
         if (omwDebugLevel == "WARNING") Os.setenv("OPENMW_DEBUG_LEVEL", "WARNING", true)
         if (omwDebugLevel == "ERROR") Os.setenv("OPENMW_DEBUG_LEVEL", "ERROR", true)
 
-        val envline: String = PreferenceManager.getDefaultSharedPreferences(this).getString("envLine", "").toString()
-        if (envline.length > 0) {
-            val envs: List<String> = envline.split(" ", "\n")
-            var i = 0
-
-            repeat(envs.count())
-            {
-                val env: List<String> = envs[i].split("=")
-                if (env.count() == 2) Os.setenv(env[0], env[1], true)
-                i = i + 1
-            }
-        }
-
         System.loadLibrary("GL")
         System.loadLibrary("openmw")
     }
@@ -157,12 +143,6 @@ class GameActivity : SDLActivity() {
         if (hasFocus) {
             hideAndroidControls(this)
         }
-    }
-
-    override fun getArguments(): Array<String> {
-        val cmd = PreferenceManager.getDefaultSharedPreferences(this).getString("commandLine", "")
-        val commandlineParser = CommandlineParser(cmd!!)
-        return commandlineParser.argv
     }
 
     private external fun getPathToJni(path_global: String, path_user: String)
