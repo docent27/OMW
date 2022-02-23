@@ -41,7 +41,6 @@
     <string name="pref_graphicsLibrary_default">gles2</string>
     <string name="pref_advanced">Дополнительно</string>
     <string name="pref_ui">Интерфейс</string>
-    <string name="pref_gamma">Гамма</string>
     <string name="pref_uiScaling">Масштаб интерфейса</string>
     <string name="uiScaling_auto">Авто (%1$.2f)</string>
     <string name="pref_screen_keeper">Экран всегда включен</string>

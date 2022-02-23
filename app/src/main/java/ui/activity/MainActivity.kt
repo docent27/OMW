@@ -375,24 +375,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // set up gamma, if invalid, use the default (1.0)
-        var gamma = 1.0f
-        try {
-            gamma = prefs.getString("pref_gamma", "")!!.toFloat()
-        } catch (e: NumberFormatException) {
-            // Reset the invalid setting
-            with(prefs.edit()) {
-                putString("pref_gamma", "")
-                apply()
-            }
-        }
-
-        try {
-            Os.setenv("OPENMW_GAMMA", "%.2f".format(Locale.ROOT, gamma), true)
-        } catch (e: ErrnoException) {
-            // can't really do much if that fails...
-        }
-
         // If scaling didn't get set, determine it automatically
         if (scaling == 0f) {
             scaling = MyApp.app.defaultScaling

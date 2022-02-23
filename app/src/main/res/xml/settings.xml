@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:key="general_settings"
-        android:title="@string/general_settings">
-
-        <ListPreference
-            android:key="pref_encoding"
-            android:summary="%s"
-            android:title="@string/pref_encoding"
-            android:dialogTitle="@string/pref_encoding"
-            android:entries="@array/pref_encoding_entries"
-            android:entryValues="@array/pref_encoding_values"
-            android:defaultValue="@string/pref_encoding_default"
-            />
+    <ListPreference
+        android:defaultValue="@string/pref_encoding_default"
+        android:dialogTitle="@string/pref_encoding"
+        android:entries="@array/pref_encoding_entries"
+        android:entryValues="@array/pref_encoding_values"
+        android:key="pref_encoding"
+        android:summary="%s"
+        android:title="@string/pref_encoding" />
 
         <Preference
             android:key="game_files"
@@ -23,21 +18,20 @@
             android:title="@string/mods"
             android:key="pref_mods"
             />
-    </PreferenceCategory>
 
-
-    <PreferenceCategory android:title="@string/pref_ui">
         <Preference
             android:title="@string/action_show_screen_controls"
             android:key="pref_controls"
             />
 
-        <EditTextPreference
-            android:key="pref_gamma"
-            android:title="@string/pref_gamma"
-            android:dialogTitle="@string/pref_gamma"
-            android:inputType="numberDecimal"
-            android:hint="1.0"
+        <ListPreference
+            android:key="pref_mouse_mode"
+            android:title="@string/pref_mouse_mode"
+            android:dialogTitle="@string/pref_mouse_mode"
+            android:entries="@array/pref_mouse_mode_entries"
+            android:entryValues="@array/pref_mouse_mode_values"
+            android:defaultValue="@string/pref_mouse_mode_default"
+            android:summary="%s"
             />
 
         <EditTextPreference
@@ -53,16 +47,6 @@
             android:title="@string/pref_customResolution"
             android:dialogTitle="@string/pref_customResolution"
             android:hint="640x480"
-            />
-
-        <ListPreference
-            android:key="pref_mouse_mode"
-            android:title="@string/pref_mouse_mode"
-            android:dialogTitle="@string/pref_mouse_mode"
-            android:entries="@array/pref_mouse_mode_entries"
-            android:entryValues="@array/pref_mouse_mode_values"
-            android:defaultValue="@string/pref_mouse_mode_default"
-            android:summary="%s"
             />
 
         <CheckBoxPreference
@@ -84,9 +68,6 @@
         <CheckBoxPreference
             android:key="pref_screen_keeper"
             android:title="@string/pref_screen_keeper"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/pref_advanced">
 
         <ListPreference
             android:key="pref_graphicsLibrary_v2"
@@ -95,8 +76,7 @@
             android:entries="@array/pref_graphicsLibrary_entries"
             android:entryValues="@array/pref_graphicsLibrary_values"
             android:defaultValue="@string/pref_graphicsLibrary_default"
-            android:summary="%s"
-        />
+            android:summary="%s" />
 
         <ListPreference
             android:defaultValue="@string/pref_debug_level_default"
@@ -106,6 +86,5 @@
             android:key="pref_debug_level"
             android:summary="%s"
             android:title="@string/pref_debug_level" />
-    </PreferenceCategory>
 
 </PreferenceScreen>
