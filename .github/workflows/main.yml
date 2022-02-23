@@ -6,12 +6,12 @@ jobs:
   build:
     strategy:
       matrix:
-        arch: [arm, arm64, x86, x86_64]
+        arch: [arm, arm64]
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     env:
-      CMAKE_VERSION: 3.18.4
+      CMAKE_VERSION: 3.19.7
 
     steps:
     - uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
       run: |
         export PATH=/home/runner/cmake-$CMAKE_VERSION-Linux-x86_64/bin/:$PATH
         cd buildscripts
-        ./build.sh --arch ${{ matrix.arch }}
+        ./build.sh --arch ${{ matrix.arch }} --lto
 
     - name: Build the APK
       run: |
