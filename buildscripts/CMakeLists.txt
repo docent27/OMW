@@ -310,7 +310,7 @@ ExternalProject_Add(bullet
 
 set(GL4ES_PATCH
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/shared-library.patch &&
-	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/gamma.patch &&
+	# patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/gamma.patch &&
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/disable-shader-hacks.patch &&
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/gl4es/highp-fog.patch
 )
@@ -453,7 +453,7 @@ set(OPENMW_COMMON
 )
 
 set(OPENMW_PATCH
-	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/openmw/01-gamma.patch &&
+	# patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/openmw/01-gamma.patch &&
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/openmw/02-loadingscreen-disable-for-now.patch &&
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/openmw/03-windowmanagerimp-always-show-mouse.patch &&
 	patch -d <SOURCE_DIR> -p1 -t -N < ${CMAKE_SOURCE_DIR}/patches/openmw/04-android-fix-context-being-lost-on-app-minimize.patch &&
