@@ -3,8 +3,8 @@
     <string name="app_name">OpenMW</string>
 
     <string-array name="pref_encoding_entries">
-        <item>Русский</item>
-        <item>Английский</item>
+        <item>паРаша</item>
+        <item>Англійська</item>
     </string-array>
 
     <string-array name="pref_encoding_values">
@@ -30,36 +30,36 @@
         <item>halfResolution</item>
     </string-array>
 
-    <string name="general_settings">Основные настройки</string>
+    <string name="general_settings">Основні налаштування</string>
     <string name="start_game_label">Start game</string>
     <string name="closeDrawer">Navigation View</string>
     <string name="openDrawer">Navigation View Closed</string>
     <string name="game_files">Файлы игры</string>
 
     <!-- Graphics library -->
-    <string name="pref_graphicsLibrary">Графическая библиотека</string>
+    <string name="pref_graphicsLibrary">Графічна бібліотека</string>
     <string name="pref_graphicsLibrary_default">gles2</string>
-    <string name="pref_advanced">Дополнительно</string>
-    <string name="pref_ui">Интерфейс</string>
-    <string name="pref_uiScaling">Масштаб интерфейса</string>
+    <string name="pref_advanced">Додатково</string>
+    <string name="pref_ui">Інтерфейс</string>
+    <string name="pref_uiScaling">Масштаб інтерфейсу</string>
     <string name="uiScaling_auto">Авто (%1$.2f)</string>
-    <string name="pref_screen_keeper">Экран всегда включен</string>
+    <string name="pref_screen_keeper">Екран завжди увімкнено</string>
     <string name="pref_touchpadSensitivity">Virtual touchpad sensitivity</string>
     <string name="action_reset_config">Сборс настроек</string>
     <string name="action_reset_screen_controls">Reset on-screen controls</string>
-    <string name="action_show_screen_controls">Экранное управление</string>
-    <string name="pref_hide_controls">Скрыть экранное управление</string>
-    <string name="config_was_reset">Настройки успешно сброшены</string>
-    <string name="config_was_reset01">Выбран пресет с минимальными настройками графики</string>
-    <string name="config_was_reset02">Выбран пресет со средними настройками графики</string>
-    <string name="config_was_reset03">Выбран пресет с максимальными настройками графики</string>
+    <string name="action_show_screen_controls">Екранне керування</string>
+    <string name="pref_hide_controls">Сховати екранне керування</string>
+    <string name="config_was_reset">Налаштування успішно скинуто</string>
+    <string name="config_was_reset01">Вибраний пресет з мінімальними настройками графіки</string>
+    <string name="config_was_reset02">Вибраний пресет із середніми налаштуваннями графіки</string>
+    <string name="config_was_reset03">Вибраний пресет з максимальними налаштуваннями графіки</string>
     <string name="pref_lang">Language settings</string>
-    <string name="pref_encoding">Язык</string>
+    <string name="pref_encoding">Мова</string>
     <string name="pref_encoding_default">win1251</string>
-    <string name="btn_opacityPlus">Alpha+</string>
-    <string name="btn_opacityMinus">Alpha-</string>
-    <string name="btn_sizePlus">Size+</string>
-    <string name="btn_sizeMinus">Size-</string>
+    <string name="btn_opacityPlus">Прозорість+</string>
+    <string name="btn_opacityMinus">Прозорість-</string>
+    <string name="btn_sizePlus">Розмір+</string>
+    <string name="btn_sizeMinus">Розмір-</string>
     <string name="btn_resetControlsLayout">Reset to defaults</string>
 
     <string-array name="pref_graphicsLibrary_entries">
@@ -96,13 +96,13 @@
     </string-array>
     <string name="pref_preload_default">false</string>
     <string name="btn_back">Назад</string>
-    <string name="mods">Моды</string>
-    <string name="action_about">О программе</string>
+    <string name="mods">Моди</string>
+    <string name="action_about">Інформація</string>
 
-    <string name="about_title">О программе OMW</string>
-    <string name="activity_mods">Плагины и ресурсы</string>
-    <string name="tab_plugins">Плагины</string>
-    <string name="tab_resources">Ресурсы</string>
+    <string name="about_title">Інформація</string>
+    <string name="activity_mods">Плагіни та ресурси</string>
+    <string name="tab_plugins">Плагіни</string>
+    <string name="tab_resources">Ресурси</string>
     <string name="data_error_title">Error locating data files</string>
     <string name="data_error_message">Please select a directory which contains both the \"Morrowind.ini\" file and the \"Data Files\" directory.</string>
     <string name="permissions_error_title">No permissions</string>
@@ -111,7 +111,7 @@
 
     <string name="no_data_files_title">Data files not found</string>
     <string name="no_data_files_message">You must copy Morrowind game files to your device and select the path under \"Game files\" before the game can be played.</string>
-    <string name="category_performance">Производительность</string>
+    <string name="category_performance">Продуктивність</string>
 
     <string name="no_content_files_title">No content files!</string>
     <string name="no_content_files_message">There are no content files enabled. Before the game can run, you must activate at least one plugin file from the \"Mods…\" menu.</string>
@@ -119,11 +119,11 @@
 
     <string name="configure_mods">Configure mods</string>
 
-    <string name="pref_mouse_mode">Режим управления</string>
+    <string name="pref_mouse_mode">Режим керування</string>
     <string-array name="pref_mouse_mode_entries">
-        <item>Гибрид</item>
+        <item>Гібрид</item>
         <item>Джойстик</item>
-        <item>Тачскрин</item>
+        <item>Тачскрін</item>
     </string-array>
     <string-array name="pref_mouse_mode_values">
         <item>hybrid</item>
@@ -147,18 +147,18 @@
 
     <string name="no_browser_title">Unable to open a URL</string>
     <string name="no_browser_message">You don\'t appear to have a web browser installed. Tried to open the following URL:\n\n%1$s</string>
-    <string name="pref_show_qp">Включить быстрые кнопки</string>
-    <string name="pref_show_fn">Включить FN кнопки</string>
-    <string name="pref_always_show_top_bar">Отображать все кнопки</string>
+    <string name="pref_show_qp">Увімкнути швидкі кнопки</string>
+    <string name="pref_show_fn">Увімкнути FN кнопки</string>
+    <string name="pref_always_show_top_bar">Відображати всі кнопки</string>
 
-    <string name="pref_debug_level">Детализация LOG файла</string>
+    <string name="pref_debug_level">Деталізація LOG файлу</string>
     <string name="pref_debug_level_default">ERROR</string>
     <string-array name="pref_debug_level_entries">
-	<item>Отладка</item>
+	<item>Налагодження</item>
 	<item>Побробно</item>
-	<item>Инфо</item>
-	<item>Предупреждения</item>
-	<item>Выкл</item>
+	<item>Інфо</item>
+	<item>Попередження</item>
+	<item>Вимкнено</item>
     </string-array>
     <string-array name="pref_debug_level_values">
 	<item>DEBUG</item>
