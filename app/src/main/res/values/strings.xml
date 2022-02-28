@@ -45,7 +45,7 @@
     <string name="uiScaling_auto">Авто (%1$.2f)</string>
     <string name="pref_screen_keeper">Екран завжди увімкнено</string>
     <string name="pref_touchpadSensitivity">Virtual touchpad sensitivity</string>
-    <string name="action_reset_config">Сборс настроек</string>
+    <string name="action_reset_config">Скидання налаштувань</string>
     <string name="action_reset_screen_controls">Reset on-screen controls</string>
     <string name="action_show_screen_controls">Екранне керування</string>
     <string name="pref_hide_controls">Сховати екранне керування</string>
@@ -61,6 +61,9 @@
     <string name="btn_sizePlus">Розмір+</string>
     <string name="btn_sizeMinus">Розмір-</string>
     <string name="btn_resetControlsLayout">Скинути все</string>
+    <string name="pref_preset01">1 - Продуктивніcть</string>
+    <string name="pref_preset02">2 - Збалансованість</string>
+    <string name="pref_preset03">3 - Якість зображення</string>
 
     <string-array name="pref_graphicsLibrary_entries">
         <item>GLESv1</item>

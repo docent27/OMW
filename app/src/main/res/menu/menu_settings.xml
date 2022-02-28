@@ -24,17 +24,17 @@
 
         <item
             android:id="@+id/action_Preset_01"
-            android:title="Низкие настройки"
+            android:title="@string/pref_preset01"
             app:showAsAction="never"
             />
         <item
             android:id="@+id/action_Preset_02"
-            android:title="Средние настройки"
+            android:title="@string/pref_preset02"
             app:showAsAction="never"
             />
         <item
             android:id="@+id/action_Preset_03"
-            android:title="Высокие настройки"
+            android:title="@string/pref_preset03"
             app:showAsAction="never"
             />
 
