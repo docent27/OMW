@@ -3,7 +3,7 @@
     <string name="app_name">OpenMW</string>
 
     <string-array name="pref_encoding_entries">
-        <item>паРаша</item>
+        <item>Російська</item>
         <item>Англійська</item>
     </string-array>
 
