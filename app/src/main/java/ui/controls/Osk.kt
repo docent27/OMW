@@ -137,12 +137,12 @@ class OskSimpleButton(val key: Char, val shiftKey: Char, positionX: Int, positio
     private var curKeyStr = keyStr
 
     override fun released() {
+        SDLActivity.onNativeKeyDown(keyCode)
         SDLActivity.nativeCommitText(curKeyStr, 0)
     }
 
-    fun shift(on: Boolean) {
-        curKeyStr = if (on) shiftKeyStr else keyStr
-        view?.text = curKeyStr
+    override fun released() {
+        SDLActivity.onNativeKeyUp(keyCode)
     }
 }
 
