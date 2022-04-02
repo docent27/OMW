@@ -52,8 +52,6 @@ class FragmentSettings : PreferenceFragment(), OnSharedPreferenceChangeListener 
         addPreferencesFromResource(R.xml.settings)
         preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
-        updateGammaState()
-
         findPreference("pref_controls").setOnPreferenceClickListener {
             val intent = Intent(activity, ConfigureControls::class.java)
             this.startActivity(intent)
@@ -87,16 +85,9 @@ class FragmentSettings : PreferenceFragment(), OnSharedPreferenceChangeListener 
         }
     }
 
-    /**
-     * Checks the specified path for a valid morrowind installation, generates config files
-     * and saves the path to shared prefs if it's valid.
-     * If it isn't, an error is displayed to the user.
-     */
     private fun setupData(path: String) {
         val sharedPref = preferenceScreen.sharedPreferences
 
-        // reset the setting so that it's erased on error instead of keeping
-        // possibly stale value
         var gameFiles = ""
 
         val inst = GameInstaller(path)
@@ -118,11 +109,6 @@ class FragmentSettings : PreferenceFragment(), OnSharedPreferenceChangeListener 
         }
     }
 
-    /**
-     * Shows an alert dialog displaying a specific error
-     * @param title Title string resource
-     * @param message Message string resource
-     */
     private fun showError(title: Int, message: Int, url: String? = null) {
         val dialog = AlertDialog.Builder(activity)
             .setTitle(title)
@@ -155,7 +141,6 @@ class FragmentSettings : PreferenceFragment(), OnSharedPreferenceChangeListener 
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         updatePreference(findPreference(key), key)
-        updateGammaState()
     }
 
     private fun updatePreference(preference: Preference?, key: String) {
@@ -173,15 +158,6 @@ class FragmentSettings : PreferenceFragment(), OnSharedPreferenceChangeListener 
         if (key == "game_files") {
             preference.summary = preference.sharedPreferences.getString("game_files", "")
         }
-    }
-
-    /**
-     * @brief Disable gamma preference if GLES1 is selected
-     */
-    private fun updateGammaState() {
-        val sharedPref = preferenceScreen.sharedPreferences
-        findPreference("pref_gamma").isEnabled =
-                sharedPref.getString("pref_graphicsLibrary_v2", "") != "gles1"
     }
 
 }

@@ -1,0 +1,115 @@
+From dc59d4d2c3d6f149e3fcc2e90f0a1907bd3d5d61 Mon Sep 17 00:00:00 2001
+From: Docent27 <docent27@ukr.net>
+Date: Sat, 2 Apr 2022 14:18:34 +0300
+Subject: [PATCH] ShadersFix
+
+---
+ files/shaders/groundcover_fragment.glsl | 2 +-
+ files/shaders/groundcover_vertex.glsl   | 2 +-
+ files/shaders/objects_fragment.glsl     | 1 +
+ files/shaders/objects_vertex.glsl       | 2 +-
+ files/shaders/terrain_fragment.glsl     | 2 +-
+ files/shaders/terrain_vertex.glsl       | 2 +-
+ files/shaders/water_fragment.glsl       | 4 ++--
+ files/shaders/water_vertex.glsl         | 2 +-
+ 8 files changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/files/shaders/groundcover_fragment.glsl b/files/shaders/groundcover_fragment.glsl
+index d669634..f77bfe3 100644
+--- a/files/shaders/groundcover_fragment.glsl
++++ b/files/shaders/groundcover_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/groundcover_vertex.glsl b/files/shaders/groundcover_vertex.glsl
+index c8db4be..2dfd3be 100644
+--- a/files/shaders/groundcover_vertex.glsl
++++ b/files/shaders/groundcover_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/objects_fragment.glsl b/files/shaders/objects_fragment.glsl
+index 85950c7..f205f11 100644
+--- a/files/shaders/objects_fragment.glsl
++++ b/files/shaders/objects_fragment.glsl
+@@ -1,4 +1,5 @@
+ #version 120
++precision highp float;
+ #pragma import_defines(FORCE_OPAQUE)
+ 
+ #if @useUBO
+diff --git a/files/shaders/objects_vertex.glsl b/files/shaders/objects_vertex.glsl
+index 77c7fef..9c3957c 100644
+--- a/files/shaders/objects_vertex.glsl
++++ b/files/shaders/objects_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/terrain_fragment.glsl b/files/shaders/terrain_fragment.glsl
+index d9d4a6d..32ce66e 100644
+--- a/files/shaders/terrain_fragment.glsl
++++ b/files/shaders/terrain_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/terrain_vertex.glsl b/files/shaders/terrain_vertex.glsl
+index b46b299..5901d3c 100644
+--- a/files/shaders/terrain_vertex.glsl
++++ b/files/shaders/terrain_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/water_fragment.glsl b/files/shaders/water_fragment.glsl
+index eaf52c1..21f6d2b 100644
+--- a/files/shaders/water_fragment.glsl
++++ b/files/shaders/water_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+@@ -210,7 +210,7 @@ uniform sampler2D normalMap;
+ uniform sampler2D reflectionMap;
+ #if REFRACTION
+ uniform sampler2D refractionMap;
+-uniform sampler2D refractionDepthMap;
++uniform highp sampler2D refractionDepthMap;
+ #endif
+ 
+ uniform float osg_SimulationTime;
+diff --git a/files/shaders/water_vertex.glsl b/files/shaders/water_vertex.glsl
+index 3a6c352..01c9bfc 100644
+--- a/files/shaders/water_vertex.glsl
++++ b/files/shaders/water_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ uniform mat4 projectionMatrix;
+ 
+ varying vec4  position;
+--
+libgit2 0.28.4
+
