@@ -3,8 +3,8 @@
     <string name="app_name">OpenMW</string>
 
     <string-array name="pref_encoding_entries">
-        <item>Російська</item>
-        <item>Англійська</item>
+        <item>Russian</item>
+        <item>English</item>
     </string-array>
 
     <string-array name="pref_encoding_values">
@@ -30,40 +30,40 @@
         <item>halfResolution</item>
     </string-array>
 
-    <string name="general_settings">Основні налаштування</string>
+    <string name="general_settings">Setup</string>
     <string name="start_game_label">Start game</string>
     <string name="closeDrawer">Navigation View</string>
     <string name="openDrawer">Navigation View Closed</string>
-    <string name="game_files">Файли гри</string>
+    <string name="game_files">Game files</string>
 
     <!-- Graphics library -->
-    <string name="pref_graphicsLibrary">Графічна бібліотека</string>
+    <string name="pref_graphicsLibrary">Graphics library</string>
     <string name="pref_graphicsLibrary_default">gles2</string>
-    <string name="pref_advanced">Додатково</string>
-    <string name="pref_ui">Інтерфейс</string>
-    <string name="pref_uiScaling">Масштаб інтерфейсу</string>
-    <string name="uiScaling_auto">Авто (%1$.2f)</string>
-    <string name="pref_screen_keeper">Екран завжди увімкнено</string>
+    <string name="pref_advanced">Advanced</string>
+    <string name="pref_ui">User interface</string>
+    <string name="pref_uiScaling">UI scaling factor</string>
+    <string name="uiScaling_auto">Auto (%1$.2f)</string>
+    <string name="pref_screen_keeper">Keep screen always on</string>
     <string name="pref_touchpadSensitivity">Virtual touchpad sensitivity</string>
-    <string name="action_reset_config">Скидання налаштувань</string>
+    <string name="action_reset_config">Reset static configuration files</string>
     <string name="action_reset_screen_controls">Reset on-screen controls</string>
-    <string name="action_show_screen_controls">Екранне керування</string>
-    <string name="pref_hide_controls">Сховати екранне керування</string>
-    <string name="config_was_reset">Налаштування успішно скинуто</string>
-    <string name="config_was_reset01">Вибраний пресет з мінімальними настройками графіки</string>
-    <string name="config_was_reset02">Вибраний пресет із середніми налаштуваннями графіки</string>
-    <string name="config_was_reset03">Вибраний пресет з максимальними налаштуваннями графіки</string>
+    <string name="action_show_screen_controls">On-screen controls</string>
+    <string name="pref_hide_controls">Hide on-screen buttons</string>
+    <string name="config_was_reset">Static configuration was reset to default values</string>
+    <string name="config_was_reset01">Preset selected - Performance</string>
+    <string name="config_was_reset02">Preset selected - Balance</string>
+    <string name="config_was_reset03">Preset selected - Quality</string>
     <string name="pref_lang">Language settings</string>
-    <string name="pref_encoding">Мова</string>
+    <string name="pref_encoding">Game language</string>
     <string name="pref_encoding_default">win1251</string>
-    <string name="btn_opacityPlus">Прозорість+</string>
-    <string name="btn_opacityMinus">Прозорість-</string>
-    <string name="btn_sizePlus">Розмір+</string>
-    <string name="btn_sizeMinus">Розмір-</string>
-    <string name="btn_resetControlsLayout">Скинути все</string>
-    <string name="pref_preset01">1 - Продуктивніcть</string>
-    <string name="pref_preset02">2 - Збалансованість</string>
-    <string name="pref_preset03">3 - Якість зображення</string>
+    <string name="btn_opacityPlus">Alpha+</string>
+    <string name="btn_opacityMinus">Alpha-</string>
+    <string name="btn_sizePlus">Size+</string>
+    <string name="btn_sizeMinus">Size-</string>
+    <string name="btn_resetControlsLayout">Reset to defaults</string>
+    <string name="pref_preset01">1 - Performance</string>
+    <string name="pref_preset02">2 - Balance</string>
+    <string name="pref_preset03">3 - Quality</string>
 
     <string-array name="pref_graphicsLibrary_entries">
         <item>GLESv1</item>
@@ -98,35 +98,35 @@
         <item>false</item>
     </string-array>
     <string name="pref_preload_default">false</string>
-    <string name="btn_back">Повернутись</string>
-    <string name="mods">Моди</string>
-    <string name="action_about">Інформація</string>
+    <string name="btn_back">Back</string>
+    <string name="mods">Mods</string>
+    <string name="action_about">Info</string>
 
-    <string name="about_title">Інформація</string>
-    <string name="activity_mods">Плагіни та ресурси</string>
-    <string name="tab_plugins">Плагіни</string>
-    <string name="tab_resources">Ресурси</string>
-    <string name="data_error_title">Помилка читання файлів гри</string>
-    <string name="data_error_message">Будь ласка, виберіть каталог, який містить як файл \"Morrowind.ini\", так і каталог \"Data Files\".</string>
-    <string name="permissions_error_title">Немає дозволів</string>
-    <string name="permissions_error_message">OMW потребує дозволу на зберігання, щоб знайти і отримати доступ до файлів гри Morrowind. Надайте цей дозвіл через налаштування.</string>
-    <string name="ini_error_message">Помилка перетворення файлу конфігурації. Будь ласка, переконайтеся, що ваш \"Morrowind.ini\" правильно сформований.</string>
+    <string name="about_title">Info</string>
+    <string name="activity_mods">Mods</string>
+    <string name="tab_plugins">Plugins</string>
+    <string name="tab_resources">Resources</string>
+    <string name="data_error_title">Error locating data files</string>
+    <string name="data_error_message">Please select a directory which contains both the \"Morrowind.ini\" file and the \"Data Files\" directory.</string>
+    <string name="permissions_error_title">No permissions</string>
+    <string name="permissions_error_message">OMW needs storage permissions to locate and access Morrowind game files. Please grant this permission through settings.</string>
+    <string name="ini_error_message">Failure transforming the configuration file. Please ensure your \"Morrowind.ini\" is well-formed.</string>
 
-    <string name="no_data_files_title">Файли даних не знайдено</string>
-    <string name="no_data_files_message">Ви повинні скопіювати файли гри Morrowind на свій пристрій і вибрати шлях у розділі \"Data Files\", перш ніж можна буде грати в гру.</string>
-    <string name="category_performance">Продуктивність</string>
+    <string name="no_data_files_title">Data files not found</string>
+    <string name="no_data_files_message">You must copy Morrowind game files to your device and select the path under \"Game files\" before the game can be played.</string>
+    <string name="category_performance">Performance</string>
 
-    <string name="no_content_files_title">Немає файлів вмісту!</string>
-    <string name="no_content_files_message">Немає ввімкнених файлів вмісту. Перш ніж запустити гру, ви повинні активувати принаймні один файл плагіна з меню \"Mods…\".</string>
-    <string name="no_content_files_dismiss">Все одно продовжуй</string>
+    <string name="no_content_files_title">No content files!</string>
+    <string name="no_content_files_message">There are no content files enabled. Before the game can run, you must activate at least one plugin file from the \"Mods…\" menu.</string>
+    <string name="no_content_files_dismiss">Proceed anyway</string>
 
-    <string name="configure_mods">Налаштувати моди</string>
+    <string name="configure_mods">Configure mods</string>
 
-    <string name="pref_mouse_mode">Режим керування</string>
+    <string name="pref_mouse_mode">Mouse mode in menus</string>
     <string-array name="pref_mouse_mode_entries">
-        <item>Гібрид</item>
-        <item>Джойстик</item>
-        <item>Тачскрін</item>
+        <item>Hybrid</item>
+        <item>Relative joystick controls</item>
+        <item>Absolute touch controls</item>
     </string-array>
     <string-array name="pref_mouse_mode_values">
         <item>hybrid</item>
@@ -150,18 +150,18 @@
 
     <string name="no_browser_title">Unable to open a URL</string>
     <string name="no_browser_message">You don\'t appear to have a web browser installed. Tried to open the following URL:\n\n%1$s</string>
-    <string name="pref_show_qp">Увімкнути швидкі кнопки</string>
-    <string name="pref_show_fn">Увімкнути FN кнопки</string>
-    <string name="pref_always_show_top_bar">Відображати всі кнопки</string>
+    <string name="pref_show_qp">Enable Quick Keys</string>
+    <string name="pref_show_fn">Enable FN keys</string>
+    <string name="pref_always_show_top_bar">Always show top-bar icons</string>
 
-    <string name="pref_debug_level">Деталізація LOG файлу</string>
+    <string name="pref_debug_level">Detail of the LOG file</string>
     <string name="pref_debug_level_default">ERROR</string>
     <string-array name="pref_debug_level_entries">
-	<item>Налагодження</item>
-	<item>Побробно</item>
-	<item>Інфо</item>
-	<item>Попередження</item>
-	<item>Вимкнено</item>
+	<item>DEBUG</item>
+	<item>VERBOSE</item>
+	<item>INFO</item>
+	<item>WARNING</item>
+	<item>ERROR</item>
     </string-array>
     <string-array name="pref_debug_level_values">
 	<item>DEBUG</item>

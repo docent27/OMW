@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenMW</string>
+
+    <string-array name="pref_encoding_entries">
+        <item>Російська</item>
+        <item>Англійська</item>
+    </string-array>
+
+    <string-array name="pref_encoding_values">
+        <item>win1251</item>
+        <item>win1252</item>
+    </string-array>
+
+    <string-array name="mipmapping_array">
+        <item>trilinear</item>
+        <item>bilinear</item>
+    </string-array>
+
+    <string-array name="resolution_entry">
+        <item>Normal (1x)</item>
+        <item>Double (2x)</item>
+        <item>Half (0.5x)</item>
+    </string-array>
+
+
+    <string-array name="resolution_array">
+        <item>normalResolution</item>
+        <item>doubleResolution</item>
+        <item>halfResolution</item>
+    </string-array>
+
+    <string name="general_settings">Основні налаштування</string>
+    <string name="start_game_label">Start game</string>
+    <string name="closeDrawer">Navigation View</string>
+    <string name="openDrawer">Navigation View Closed</string>
+    <string name="game_files">Файли гри</string>
+
+    <!-- Graphics library -->
+    <string name="pref_graphicsLibrary">Графічна бібліотека</string>
+    <string name="pref_graphicsLibrary_default">gles2</string>
+    <string name="pref_advanced">Додатково</string>
+    <string name="pref_ui">Інтерфейс</string>
+    <string name="pref_uiScaling">Масштаб інтерфейсу</string>
+    <string name="uiScaling_auto">Авто (%1$.2f)</string>
+    <string name="pref_screen_keeper">Екран завжди увімкнено</string>
+    <string name="pref_touchpadSensitivity">Virtual touchpad sensitivity</string>
+    <string name="action_reset_config">Скидання налаштувань</string>
+    <string name="action_reset_screen_controls">Reset on-screen controls</string>
+    <string name="action_show_screen_controls">Екранне керування</string>
+    <string name="pref_hide_controls">Сховати екранне керування</string>
+    <string name="config_was_reset">Налаштування успішно скинуто</string>
+    <string name="config_was_reset01">Вибраний пресет з мінімальними настройками графіки</string>
+    <string name="config_was_reset02">Вибраний пресет із середніми налаштуваннями графіки</string>
+    <string name="config_was_reset03">Вибраний пресет з максимальними налаштуваннями графіки</string>
+    <string name="pref_lang">Language settings</string>
+    <string name="pref_encoding">Мова</string>
+    <string name="pref_encoding_default">win1251</string>
+    <string name="btn_opacityPlus">Альфа+</string>
+    <string name="btn_opacityMinus">Альфа-</string>
+    <string name="btn_sizePlus">Розмір+</string>
+    <string name="btn_sizeMinus">Розмір-</string>
+    <string name="btn_resetControlsLayout">Скинути все</string>
+    <string name="pref_preset01">1 - Продуктивніcть</string>
+    <string name="pref_preset02">2 - Збалансованість</string>
+    <string name="pref_preset03">3 - Якість зображення</string>
+
+    <string-array name="pref_graphicsLibrary_entries">
+        <item>GLESv1</item>
+        <item>GLESv2</item>
+    </string-array>
+
+    <string-array name="pref_graphicsLibrary_values">
+        <item>gles1</item>
+        <item>gles2</item>
+    </string-array>
+
+    <string name="pref_unsafe_state_graph">Enable unsafe graphics optimizations</string>
+    <string-array name="pref_unsafe_state_graph_entries">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="pref_unsafe_state_graph_values">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+    <string name="pref_unsafe_state_graph_default">false</string>
+
+    <string name="pref_physicsFPS2_default">30</string>
+
+    <string name="pref_preload">Preloading</string>
+    <string-array name="pref_preload_entries">
+        <item>Enabled</item>
+        <item>Disabled</item>
+    </string-array>
+    <string-array name="pref_preload_values">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+    <string name="pref_preload_default">false</string>
+    <string name="btn_back">Повернутись</string>
+    <string name="mods">Моди</string>
+    <string name="action_about">Інформація</string>
+
+    <string name="about_title">Інформація</string>
+    <string name="activity_mods">Плагіни та ресурси</string>
+    <string name="tab_plugins">Плагіни</string>
+    <string name="tab_resources">Ресурси</string>
+    <string name="data_error_title">Помилка читання файлів гри</string>
+    <string name="data_error_message">Будь ласка, виберіть каталог, який містить як файл \"Morrowind.ini\", так і каталог \"Data Files\".</string>
+    <string name="permissions_error_title">Немає дозволів</string>
+    <string name="permissions_error_message">OMW потребує дозволу на зберігання, щоб знайти і отримати доступ до файлів гри Morrowind. Надайте цей дозвіл через налаштування.</string>
+    <string name="ini_error_message">Помилка перетворення файлу конфігурації. Будь ласка, переконайтеся, що ваш \"Morrowind.ini\" правильно сформований.</string>
+
+    <string name="no_data_files_title">Файли даних не знайдено</string>
+    <string name="no_data_files_message">Ви повинні скопіювати файли гри Morrowind на свій пристрій і вибрати шлях у розділі \"Data Files\", перш ніж можна буде грати в гру.</string>
+    <string name="category_performance">Продуктивність</string>
+
+    <string name="no_content_files_title">Немає файлів вмісту!</string>
+    <string name="no_content_files_message">Немає ввімкнених файлів вмісту. Перш ніж запустити гру, ви повинні активувати принаймні один файл плагіна з меню \"Mods…\".</string>
+    <string name="no_content_files_dismiss">Все одно продовжуй</string>
+
+    <string name="configure_mods">Налаштувати моди</string>
+
+    <string name="pref_mouse_mode">Режим керування</string>
+    <string-array name="pref_mouse_mode_entries">
+        <item>Гібрид</item>
+        <item>Джойстик</item>
+        <item>Тачскрін</item>
+    </string-array>
+    <string-array name="pref_mouse_mode_values">
+        <item>hybrid</item>
+        <item>joystick</item>
+        <item>touch</item>
+    </string-array>
+    <string name="pref_mouse_mode_default">hybrid</string>
+
+    <string name="bugsnag_yes">Yes</string>
+    <string name="bugsnag_no">No</string>
+    <string name="bugsnag_policy">Privacy policy</string>
+
+    <string name="bugsnag_consent_title">Report crashes automatically?</string>
+    <string name="bugsnag_consent_message">Would you like to enable automatic crash reporting?\nIf a crash occurs, some data about your device, configuration and installed mods will be automatically submitted to Bugsnag. You can find more information in the Privacy Policy.\nThis setting can be changed at any time from the menu.</string>
+
+    <string name="bugsnag_consent_restart_title">Please restart the application</string>
+    <string name="bugsnag_consent_restart_message">You must restart the application for these settings to come into effect.</string>
+    <string name="action_bugsnag_consent">Crash reporting</string>
+
+    <string name="dialog_howto"></string>
+
+    <string name="no_browser_title">Unable to open a URL</string>
+    <string name="no_browser_message">You don\'t appear to have a web browser installed. Tried to open the following URL:\n\n%1$s</string>
+    <string name="pref_show_qp">Увімкнути швидкі кнопки</string>
+    <string name="pref_show_fn">Увімкнути FN кнопки</string>
+    <string name="pref_always_show_top_bar">Відображати всі кнопки</string>
+
+    <string name="pref_debug_level">Деталізація LOG файлу</string>
+    <string name="pref_debug_level_default">ERROR</string>
+    <string-array name="pref_debug_level_entries">
+	<item>Налагодження</item>
+	<item>Побробно</item>
+	<item>Інфо</item>
+	<item>Попередження</item>
+	<item>Вимкнено</item>
+    </string-array>
+    <string-array name="pref_debug_level_values">
+	<item>DEBUG</item>
+	<item>VERBOSE</item>
+	<item>INFO</item>
+	<item>WARNING</item>
+	<item>ERROR</item>
+    </string-array>
+
+</resources>
