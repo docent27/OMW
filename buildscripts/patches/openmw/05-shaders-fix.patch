@@ -1,0 +1,480 @@
+From 89468c000a969ca63c9ea8a42d5729825bc2d790 Mon Sep 17 00:00:00 2001
+From: Docent27 <docent27@ukr.net>
+Date: Tue, 17 May 2022 17:03:23 +0300
+Subject: [PATCH] Shader FIX
+
+---
+ files/shaders/blended_depth_postpass_fragment.glsl |  2 +-
+ files/shaders/blended_depth_postpass_vertex.glsl   |  2 +-
+ files/shaders/debug_fragment.glsl                  |  2 +-
+ files/shaders/debug_vertex.glsl                    |  2 +-
+ files/shaders/fullscreen_tri_fragment.glsl         |  4 ++--
+ files/shaders/fullscreen_tri_vertex.glsl           |  2 +-
+ files/shaders/groundcover_fragment.glsl            |  2 +-
+ files/shaders/groundcover_vertex.glsl              |  2 +-
+ files/shaders/gui_fragment.glsl                    |  2 +-
+ files/shaders/gui_vertex.glsl                      |  2 +-
+ files/shaders/hdr_fragment.glsl                    |  2 +-
+ files/shaders/hdr_luminance_fragment.glsl          |  2 +-
+ files/shaders/nv_default_fragment.glsl             |  1 +
+ files/shaders/nv_default_vertex.glsl               |  2 +-
+ files/shaders/nv_nolighting_fragment.glsl          |  1 +
+ files/shaders/nv_nolighting_vertex.glsl            |  2 +-
+ files/shaders/objects_fragment.glsl                |  1 +
+ files/shaders/objects_vertex.glsl                  |  2 +-
+ files/shaders/openmw_fragment.glsl                 |  2 +-
+ files/shaders/openmw_fragment.h.glsl               | 30 ++++++++++++++++++++++++------
+ files/shaders/openmw_vertex.glsl                   |  2 +-
+ files/shaders/openmw_vertex.h.glsl                 | 26 ++++++++++++++++++++------
+ files/shaders/s360_fragment.glsl                   |  2 +-
+ files/shaders/s360_vertex.glsl                     |  2 +-
+ files/shaders/shadowcasting_fragment.glsl          |  2 +-
+ files/shaders/shadowcasting_vertex.glsl            |  2 +-
+ files/shaders/shadows_fragment.glsl                |  4 ++--
+ files/shaders/sky_fragment.glsl                    |  2 +-
+ files/shaders/sky_vertex.glsl                      |  2 +-
+ files/shaders/terrain_fragment.glsl                |  2 +-
+ files/shaders/terrain_vertex.glsl                  |  2 +-
+ files/shaders/water_fragment.glsl                  |  4 ++--
+ files/shaders/water_vertex.glsl                    |  2 +-
+ 33 files changed, 78 insertions(+), 43 deletions(-)
+
+diff --git a/files/shaders/blended_depth_postpass_fragment.glsl b/files/shaders/blended_depth_postpass_fragment.glsl
+index 61e8b4e..d6e918a 100644
+--- a/files/shaders/blended_depth_postpass_fragment.glsl
++++ b/files/shaders/blended_depth_postpass_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ uniform sampler2D diffuseMap;
+ 
+ varying vec2 diffuseMapUV;
+diff --git a/files/shaders/blended_depth_postpass_vertex.glsl b/files/shaders/blended_depth_postpass_vertex.glsl
+index 471a2df..4958fe3 100644
+--- a/files/shaders/blended_depth_postpass_vertex.glsl
++++ b/files/shaders/blended_depth_postpass_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ uniform mat4 projectionMatrix;
+ 
+ varying vec2 diffuseMapUV;
+diff --git a/files/shaders/debug_fragment.glsl b/files/shaders/debug_fragment.glsl
+index 1b25510..cc95e7e 100644
+--- a/files/shaders/debug_fragment.glsl
++++ b/files/shaders/debug_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #include "vertexcolors.glsl"
+ 
+ void main()
+diff --git a/files/shaders/debug_vertex.glsl b/files/shaders/debug_vertex.glsl
+index fd41a6f..ee799eb 100644
+--- a/files/shaders/debug_vertex.glsl
++++ b/files/shaders/debug_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #include "openmw_vertex.h.glsl"
+ 
+ centroid varying vec4 passColor;
+diff --git a/files/shaders/fullscreen_tri_fragment.glsl b/files/shaders/fullscreen_tri_fragment.glsl
+index b71f983..2d4866c 100644
+--- a/files/shaders/fullscreen_tri_fragment.glsl
++++ b/files/shaders/fullscreen_tri_fragment.glsl
+@@ -1,10 +1,10 @@
+ #version 120
+-
++precision highp float;
+ varying vec2 uv;
+ 
+ #include "openmw_fragment.h.glsl"
+ 
+ void main()
+ {
+     gl_FragColor = mw_samplerLastShader(uv);
+-}
+\ No newline at end of file
++}
+diff --git a/files/shaders/fullscreen_tri_vertex.glsl b/files/shaders/fullscreen_tri_vertex.glsl
+index 794e082..439aa4a 100644
+--- a/files/shaders/fullscreen_tri_vertex.glsl
++++ b/files/shaders/fullscreen_tri_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ varying vec2 uv;
+ 
+ void main()
+diff --git a/files/shaders/groundcover_fragment.glsl b/files/shaders/groundcover_fragment.glsl
+index b7ff102..ab06d51 100644
+--- a/files/shaders/groundcover_fragment.glsl
++++ b/files/shaders/groundcover_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/groundcover_vertex.glsl b/files/shaders/groundcover_vertex.glsl
+index aa9dea3..8a7f76e 100644
+--- a/files/shaders/groundcover_vertex.glsl
++++ b/files/shaders/groundcover_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/gui_fragment.glsl b/files/shaders/gui_fragment.glsl
+index a8c9434..2ad8d00 100644
+--- a/files/shaders/gui_fragment.glsl
++++ b/files/shaders/gui_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ uniform sampler2D diffuseMap;
+ 
+ varying vec2 diffuseMapUV;
+diff --git a/files/shaders/gui_vertex.glsl b/files/shaders/gui_vertex.glsl
+index b378b09..f099716 100644
+--- a/files/shaders/gui_vertex.glsl
++++ b/files/shaders/gui_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ varying vec2 diffuseMapUV;
+ varying vec4 passColor;
+ 
+diff --git a/files/shaders/hdr_fragment.glsl b/files/shaders/hdr_fragment.glsl
+index 5490a68..3fa0528 100644
+--- a/files/shaders/hdr_fragment.glsl
++++ b/files/shaders/hdr_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ varying vec2 uv;
+ uniform sampler2D luminanceSceneTex;
+ uniform sampler2D prevLuminanceSceneTex;
+diff --git a/files/shaders/hdr_luminance_fragment.glsl b/files/shaders/hdr_luminance_fragment.glsl
+index f78dc41..20b6c12 100644
+--- a/files/shaders/hdr_luminance_fragment.glsl
++++ b/files/shaders/hdr_luminance_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ varying vec2 uv;
+ uniform sampler2D sceneTex;
+ 
+diff --git a/files/shaders/nv_default_fragment.glsl b/files/shaders/nv_default_fragment.glsl
+index 9cb784a..bdd00c7 100644
+--- a/files/shaders/nv_default_fragment.glsl
++++ b/files/shaders/nv_default_fragment.glsl
+@@ -1,4 +1,5 @@
+ #version 120
++precision highp float;
+ #pragma import_defines(FORCE_OPAQUE)
+ 
+ #if @useUBO
+diff --git a/files/shaders/nv_default_vertex.glsl b/files/shaders/nv_default_vertex.glsl
+index 0d014b0..4717568 100644
+--- a/files/shaders/nv_default_vertex.glsl
++++ b/files/shaders/nv_default_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/nv_nolighting_fragment.glsl b/files/shaders/nv_nolighting_fragment.glsl
+index 7c4f473..71e7cde 100644
+--- a/files/shaders/nv_nolighting_fragment.glsl
++++ b/files/shaders/nv_nolighting_fragment.glsl
+@@ -1,4 +1,5 @@
+ #version 120
++precision highp float;
+ #pragma import_defines(FORCE_OPAQUE)
+ 
+ #if @useGPUShader4
+diff --git a/files/shaders/nv_nolighting_vertex.glsl b/files/shaders/nv_nolighting_vertex.glsl
+index 7b1f696..0b917b1 100644
+--- a/files/shaders/nv_nolighting_vertex.glsl
++++ b/files/shaders/nv_nolighting_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #include "openmw_vertex.h.glsl"
+ 
+ #if @diffuseMap
+diff --git a/files/shaders/objects_fragment.glsl b/files/shaders/objects_fragment.glsl
+index 16cbf9b..f015baf 100644
+--- a/files/shaders/objects_fragment.glsl
++++ b/files/shaders/objects_fragment.glsl
+@@ -1,4 +1,5 @@
+ #version 120
++precision highp float;
+ #pragma import_defines(FORCE_OPAQUE)
+ 
+ #if @useUBO
+diff --git a/files/shaders/objects_vertex.glsl b/files/shaders/objects_vertex.glsl
+index 5c94417..82053f9 100644
+--- a/files/shaders/objects_vertex.glsl
++++ b/files/shaders/objects_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/openmw_fragment.glsl b/files/shaders/openmw_fragment.glsl
+index 151f8fd..38a4ecc 100644
+--- a/files/shaders/openmw_fragment.glsl
++++ b/files/shaders/openmw_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #include "openmw_fragment.h.glsl"
+ 
+ uniform sampler2D reflectionMap;
+diff --git a/files/shaders/openmw_fragment.h.glsl b/files/shaders/openmw_fragment.h.glsl
+index c96912e..cbc3394 100644
+--- a/files/shaders/openmw_fragment.h.glsl
++++ b/files/shaders/openmw_fragment.h.glsl
+@@ -1,11 +1,29 @@
+-@link "openmw_fragment.glsl" if !@useOVR_multiview
+-@link "openmw_fragment_multiview.glsl" if @useOVR_multiview
+ 
+-vec4 mw_sampleReflectionMap(vec2 uv);
++uniform sampler2D reflectionMap;
++
++vec4 mw_sampleReflectionMap(vec2 uv)
++{
++    return texture2D(reflectionMap, uv);
++}
+ 
+ #if @refraction_enabled
+-vec4 mw_sampleRefractionMap(vec2 uv);
+-float mw_sampleRefractionDepthMap(vec2 uv);
++uniform sampler2D refractionMap;
++uniform sampler2D refractionDepthMap;
++
++vec4 mw_sampleRefractionMap(vec2 uv)
++{
++    return texture2D(refractionMap, uv);
++}
++
++float mw_sampleRefractionDepthMap(vec2 uv)
++{
++    return texture2D(refractionDepthMap, uv).x;
++}
+ #endif
+ 
+-vec4 mw_samplerLastShader(vec2 uv);
+\ No newline at end of file
++uniform sampler2D omw_SamplerLastShader;
++
++vec4 mw_samplerLastShader(vec2 uv)
++{
++    return texture2D(omw_SamplerLastShader, uv);
++}
+diff --git a/files/shaders/openmw_vertex.glsl b/files/shaders/openmw_vertex.glsl
+index 68a98c7..967811e 100644
+--- a/files/shaders/openmw_vertex.glsl
++++ b/files/shaders/openmw_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #include "openmw_vertex.h.glsl"
+ 
+ uniform mat4 projectionMatrix;
+diff --git a/files/shaders/openmw_vertex.h.glsl b/files/shaders/openmw_vertex.h.glsl
+index 3794121..38c9eb4 100644
+--- a/files/shaders/openmw_vertex.h.glsl
++++ b/files/shaders/openmw_vertex.h.glsl
+@@ -1,7 +1,21 @@
+-@link "openmw_vertex.glsl" if !@useOVR_multiview
+-@link "openmw_vertex_multiview.glsl" if @useOVR_multiview
++uniform mat4 projectionMatrix;
+ 
+-vec4 mw_modelToClip(vec4 pos);
+-vec4 mw_modelToView(vec4 pos);
+-vec4 mw_viewToClip(vec4 pos);
+-vec4 mw_viewStereoAdjust(vec4 pos);
+\ No newline at end of file
++vec4 mw_modelToView(vec4 pos)
++{
++    return gl_ModelViewMatrix * pos;
++}
++
++vec4 mw_modelToClip(vec4 pos)
++{
++    return projectionMatrix * mw_modelToView(pos);
++}
++
++vec4 mw_viewToClip(vec4 pos)
++{
++    return projectionMatrix * pos;
++}
++
++vec4 mw_viewStereoAdjust(vec4 pos)
++{
++    return pos;
++}
+\ No newline at end of file
+diff --git a/files/shaders/s360_fragment.glsl b/files/shaders/s360_fragment.glsl
+index f52e147..900c086 100644
+--- a/files/shaders/s360_fragment.glsl
++++ b/files/shaders/s360_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ varying vec2 uv;
+ uniform samplerCube cubeMap;
+ uniform int mapping;
+diff --git a/files/shaders/s360_vertex.glsl b/files/shaders/s360_vertex.glsl
+index ad96620..ad05c74 100644
+--- a/files/shaders/s360_vertex.glsl
++++ b/files/shaders/s360_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ varying vec2 uv;
+ 
+ void main(void)
+diff --git a/files/shaders/shadowcasting_fragment.glsl b/files/shaders/shadowcasting_fragment.glsl
+index 07fad04..3900d56 100644
+--- a/files/shaders/shadowcasting_fragment.glsl
++++ b/files/shaders/shadowcasting_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useGPUShader4
+     #extension GL_EXT_gpu_shader4: require
+ #endif
+diff --git a/files/shaders/shadowcasting_vertex.glsl b/files/shaders/shadowcasting_vertex.glsl
+index e36f21a..273f44e 100644
+--- a/files/shaders/shadowcasting_vertex.glsl
++++ b/files/shaders/shadowcasting_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ varying vec2 diffuseMapUV;
+ 
+ varying float alphaPassthrough;
+diff --git a/files/shaders/shadows_fragment.glsl b/files/shaders/shadows_fragment.glsl
+index 6143709..5f64566 100644
+--- a/files/shaders/shadows_fragment.glsl
++++ b/files/shaders/shadows_fragment.glsl
+@@ -1,5 +1,5 @@
+ #define SHADOWS @shadows_enabled
+-
++precision highp float;
+ #if SHADOWS
+     uniform float maximumShadowMapDistance;
+     uniform float shadowFadeStart;
+@@ -85,4 +85,4 @@ void applyShadowDebugOverlay()
+         }
+     @endforeach
+ #endif // SHADOWS
+-}
+\ No newline at end of file
++}
+diff --git a/files/shaders/sky_fragment.glsl b/files/shaders/sky_fragment.glsl
+index cfa3650..873574c 100644
+--- a/files/shaders/sky_fragment.glsl
++++ b/files/shaders/sky_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #include "skypasses.glsl"
+ 
+ uniform int pass;
+diff --git a/files/shaders/sky_vertex.glsl b/files/shaders/sky_vertex.glsl
+index 8ff9c0f..ddaeb58 100644
+--- a/files/shaders/sky_vertex.glsl
++++ b/files/shaders/sky_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #include "openmw_vertex.h.glsl"
+ 
+ #include "skypasses.glsl"
+diff --git a/files/shaders/terrain_fragment.glsl b/files/shaders/terrain_fragment.glsl
+index 7ff696e..a8795b3 100644
+--- a/files/shaders/terrain_fragment.glsl
++++ b/files/shaders/terrain_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/terrain_vertex.glsl b/files/shaders/terrain_vertex.glsl
+index a426061..c889b3f 100644
+--- a/files/shaders/terrain_vertex.glsl
++++ b/files/shaders/terrain_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+diff --git a/files/shaders/water_fragment.glsl b/files/shaders/water_fragment.glsl
+index 51d30be..b708a8c 100644
+--- a/files/shaders/water_fragment.glsl
++++ b/files/shaders/water_fragment.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #if @useUBO
+     #extension GL_ARB_uniform_buffer_object : require
+ #endif
+@@ -207,7 +207,7 @@ vec2 normalCoords(vec2 uv, float scale, float speed, float time, float timer1, f
+ varying vec4 position;
+ varying float linearDepth;
+ 
+-uniform sampler2D normalMap;
++uniform highp sampler2D normalMap;
+ 
+ uniform float osg_SimulationTime;
+ 
+diff --git a/files/shaders/water_vertex.glsl b/files/shaders/water_vertex.glsl
+index b09d3b5..7d58345 100644
+--- a/files/shaders/water_vertex.glsl
++++ b/files/shaders/water_vertex.glsl
+@@ -1,5 +1,5 @@
+ #version 120
+-
++precision highp float;
+ #include "openmw_vertex.h.glsl"
+ 
+ varying vec4  position;
+--
+libgit2 0.28.4
+

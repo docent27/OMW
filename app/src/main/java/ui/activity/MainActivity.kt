@@ -220,31 +220,6 @@ class MainActivity : AppCompatActivity() {
         this@MainActivity.startActivityForResult(intent, 1)
     }
 
-
-    /**
-     * Set up fixed screen resolution
-     * This doesn't do anything unless the user chose to override screen resolution
-     */
-    private fun obtainFixedScreenResolution() {
-        // Split resolution e.g 640x480 to width/height
-        val customResolution = prefs.getString("pref_customResolution", "")
-        val sep = customResolution!!.indexOf("x")
-        if (sep > 0) {
-            try {
-                val x = Integer.parseInt(customResolution.substring(0, sep))
-                val y = Integer.parseInt(customResolution.substring(sep + 1))
-
-                resolutionX = x
-                resolutionY = y
-            } catch (e: NumberFormatException) {
-                // user entered resolution wrong, just ignore it
-            }
-        }
-    }
-
-    /**
-     * Generates openmw.cfg using values from openmw.base.cfg combined with mod manager settings
-     */
     private fun generateOpenmwCfg() {
         // contents of openmw.base.cfg
         val base: String
@@ -328,6 +303,60 @@ class MainActivity : AppCompatActivity() {
         File(Constants.VERSION_STAMP).writeText(BuildConfig.VERSION_CODE.toString())
     }
 
+    private fun PresetCopir01() {
+	deleteRecursive(File(Constants.USER_CONFIG))
+	val assetCopier = CopyFilesFromAssets(this)
+	assetCopier.copy("libopenmw/resources", Constants.RESOURCES)
+	assetCopier.copy("libopenmw/openmw", Constants.GLOBAL_CONFIG)
+	File(Constants.USER_CONFIG).mkdirs()
+	if (!File(Constants.USER_OPENMW_CFG).exists())
+	File(Constants.USER_OPENMW_CFG).writeText("# This is the user openmw.cfg. Feel free to modify it as you wish.\n")
+	File(Constants.VERSION_STAMP).writeText(BuildConfig.VERSION_CODE.toString())
+
+	var settingsFile = File(Constants.USER_CONFIG + "/settings.cfg")
+	var settingsFolder = File(Constants.USER_CONFIG)
+	settingsFolder.mkdirs()
+	val settingsFileCreated :Boolean = settingsFile.createNewFile()
+	if(settingsFileCreated)
+	settingsFile.writeText(File(filesDir, "config/settings01.cfg").readText())
+    }
+
+    private fun PresetCopir02() {
+	deleteRecursive(File(Constants.USER_CONFIG))
+	val assetCopier = CopyFilesFromAssets(this)
+	assetCopier.copy("libopenmw/resources", Constants.RESOURCES)
+	assetCopier.copy("libopenmw/openmw", Constants.GLOBAL_CONFIG)
+	File(Constants.USER_CONFIG).mkdirs()
+	if (!File(Constants.USER_OPENMW_CFG).exists())
+	File(Constants.USER_OPENMW_CFG).writeText("# This is the user openmw.cfg. Feel free to modify it as you wish.\n")
+	File(Constants.VERSION_STAMP).writeText(BuildConfig.VERSION_CODE.toString())
+
+	var settingsFile = File(Constants.USER_CONFIG + "/settings.cfg")
+	var settingsFolder = File(Constants.USER_CONFIG)
+	settingsFolder.mkdirs()
+	val settingsFileCreated :Boolean = settingsFile.createNewFile()
+	if(settingsFileCreated)
+	settingsFile.writeText(File(filesDir, "config/settings02.cfg").readText())
+    }
+
+    private fun PresetCopir03() {
+	deleteRecursive(File(Constants.USER_CONFIG))
+	val assetCopier = CopyFilesFromAssets(this)
+	assetCopier.copy("libopenmw/resources", Constants.RESOURCES)
+	assetCopier.copy("libopenmw/openmw", Constants.GLOBAL_CONFIG)
+	File(Constants.USER_CONFIG).mkdirs()
+	if (!File(Constants.USER_OPENMW_CFG).exists())
+	File(Constants.USER_OPENMW_CFG).writeText("# This is the user openmw.cfg. Feel free to modify it as you wish.\n")
+	File(Constants.VERSION_STAMP).writeText(BuildConfig.VERSION_CODE.toString())
+
+	var settingsFile = File(Constants.USER_CONFIG + "/settings.cfg")
+	var settingsFolder = File(Constants.USER_CONFIG)
+	settingsFolder.mkdirs()
+	val settingsFileCreated :Boolean = settingsFile.createNewFile()
+	if(settingsFileCreated)
+	settingsFile.writeText(File(filesDir, "config/settings03.cfg").readText())
+    }
+
     /**
      * Removes global static files, these include resources and config
      */
@@ -373,24 +402,6 @@ class MainActivity : AppCompatActivity() {
                 putString("pref_uiScaling", "")
                 apply()
             }
-        }
-
-        // set up gamma, if invalid, use the default (1.0)
-        var gamma = 1.0f
-        try {
-            gamma = prefs.getString("pref_gamma", "")!!.toFloat()
-        } catch (e: NumberFormatException) {
-            // Reset the invalid setting
-            with(prefs.edit()) {
-                putString("pref_gamma", "")
-                apply()
-            }
-        }
-
-        try {
-            Os.setenv("OPENMW_GAMMA", "%.2f".format(Locale.ROOT, gamma), true)
-        } catch (e: ErrnoException) {
-            // can't really do much if that fails...
         }
 
         // If scaling didn't get set, determine it automatically
@@ -486,7 +497,6 @@ class MainActivity : AppCompatActivity() {
                 ))
 
                 runOnUiThread {
-                    obtainFixedScreenResolution()
                     dialog.hide()
                     runGame()
                 }
@@ -530,6 +540,22 @@ class MainActivity : AppCompatActivity() {
 
             R.id.action_bugsnag_consent -> {
                 askBugsnagConsent()
+                true
+            }
+
+            R.id.action_Preset_01 -> {
+                PresetCopir01()
+		Toast.makeText(this, getString(R.string.config_was_reset01), Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_Preset_02 -> {
+                PresetCopir02()
+		Toast.makeText(this, getString(R.string.config_was_reset02), Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_Preset_03 -> {
+                PresetCopir03()
+		Toast.makeText(this, getString(R.string.config_was_reset03), Toast.LENGTH_SHORT).show()
                 true
             }
 

@@ -4,11 +4,11 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-export ARCH="arm"
+export ARCH="arm64"
 export CCACHE="false"
 ASAN="false"
 DEPLOY_RESOURCES="true"
-LTO="false"
+LTO="true"
 BUILD_TYPE="release"
 CFLAGS="-fPIC"
 CXXFLAGS="-fPIC -frtti -fexceptions"
@@ -93,10 +93,9 @@ else
 fi
 
 if [[ $LTO = "true" ]]; then
-	CFLAGS="$CFLAGS -flto"
-	CXXFLAGS="$CXXFLAGS -flto"
-	# emulated-tls should not be needed in ndk r18 https://github.com/android-ndk/ndk/issues/498#issuecomment-327825754
-	LDFLAGS="$LDFLAGS -flto -Wl,-plugin-opt=-emulated-tls -fuse-ld=gold"
+	CFLAGS="$CFLAGS -flto=thin"
+	CXXFLAGS="$CXXFLAGS -flto=thin"
+	LDFLAGS="$LDFLAGS -flto=thin -Wl,-plugin-opt=-emulated-tls -fuse-ld=gold"
 fi
 
 if [[ $ARCH = "arm" ]]; then
@@ -124,6 +123,7 @@ echo "(Please run ./clean.sh manually if you modify any of the options)"
 echo ""
 
 echo "==> Download and set up the NDK"
+./include/setup-icu.sh
 ./include/download-ndk.sh
 ./include/setup-ndk.sh
 

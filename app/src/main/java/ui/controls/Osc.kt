@@ -336,7 +336,7 @@ class Osc {
     private var topVisible = true //< The controls located at the top hidden behind the hamburger toggle
     private var visibilityState = 0
     private val btnMouse = OscCustomButton("mouse", OscVisibility.NULL,
-        R.drawable.mouse, TOP_BAR_SPACING * 6, 0) { toggleMouse() }
+        R.drawable.mouse, TOP_BAR_SPACING * 8, 0) { toggleMouse() }
     private val btnTopToggle = OscCustomButton("toggle", OscVisibility.NULL,
         R.drawable.toggle, 0, 0) { toggleTopControls() }
 
@@ -382,7 +382,7 @@ class Osc {
         val btnColumnSpacing = 65
 
         // Fn buttons: F1, F3, F4, F10, F11 are the only ones we care about
-        arrayOf(1, 3, 4, 10, 11).forEachIndexed{ i, el ->
+        arrayOf(1, 2, 3, 4, 10, 11).forEachIndexed{ i, el ->
             val code = 130 + el
             val column = (i + 1) / 4 + 2
             val row = (i + 1) % 4 + 1
@@ -406,14 +406,18 @@ class Osc {
         topButtons = arrayListOf(
             OscImageButton("changePerson", OscVisibility.NORMAL,
                 R.drawable.third_person, TOP_BAR_SPACING * 1, 0, KeyEvent.KEYCODE_TAB),
+            OscImageButton("alwaysRun", OscVisibility.NORMAL,
+                R.drawable.run, TOP_BAR_SPACING * 2, 0, KeyEvent.KEYCODE_Q),
             OscImageButton("quickSave", OscVisibility.NORMAL,
-                R.drawable.save, TOP_BAR_SPACING * 2, 0, 135),
+                R.drawable.save, TOP_BAR_SPACING * 3, 0, 135),
+            OscImageButton("quickLoad", OscVisibility.NORMAL,
+                R.drawable.load, TOP_BAR_SPACING * 4, 0, 139),
             OscImageButton("diary", OscVisibility.ESSENTIAL,
-                R.drawable.journal, TOP_BAR_SPACING * 3, 0, KeyEvent.KEYCODE_J),
+                R.drawable.journal, TOP_BAR_SPACING * 5, 0, KeyEvent.KEYCODE_J),
             OscImageButton("wait", OscVisibility.NORMAL,
-                R.drawable.wait, TOP_BAR_SPACING * 4, 0, KeyEvent.KEYCODE_T),
+                R.drawable.wait, TOP_BAR_SPACING * 6, 0, KeyEvent.KEYCODE_T),
             OscCustomButton("keyboard", OscVisibility.NULL,
-                R.drawable.keyboard, TOP_BAR_SPACING * 5, 0) { toggleKeyboard() },
+                R.drawable.keyboard, TOP_BAR_SPACING * 7, 0) { toggleKeyboard() },
             btnMouse
         )
 

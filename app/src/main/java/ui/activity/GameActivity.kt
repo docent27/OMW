@@ -35,7 +35,6 @@ import org.libsdl.app.SDLActivity
 
 import constants.Constants
 import cursor.MouseCursor
-import parser.CommandlineParser
 import ui.controls.Osc
 
 import utils.Utils.hideAndroidControls
@@ -69,17 +68,6 @@ class GameActivity : SDLActivity() {
     override fun loadLibraries() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val graphicsLibrary = prefs!!.getString("pref_graphicsLibrary_v2", "")
-        val physicsFPS = prefs!!.getString("pref_physicsFPS2", "")
-        if (!physicsFPS!!.isEmpty()) {
-            try {
-                Os.setenv("OPENMW_PHYSICS_FPS", physicsFPS, true)
-                Os.setenv("OSG_TEXT_SHADER_TECHNIQUE", "NO_TEXT_SHADER", true)
-            } catch (e: ErrnoException) {
-                Log.e("OpenMW", "Failed setting environment variables.")
-                e.printStackTrace()
-            }
-
-        }
 
         System.loadLibrary("c++_shared")
         System.loadLibrary("openal")
@@ -88,6 +76,10 @@ class GameActivity : SDLActivity() {
             try {
                 Os.setenv("OPENMW_GLES_VERSION", "2", true)
                 Os.setenv("LIBGL_ES", "2", true)
+                Os.setenv("OSG_VERTEX_BUFFER_HINT", "VBO", true)
+                Os.setenv("LIBGL_NOHIGHP", "1", true)
+                Os.setenv("LIBGL_NOPSA", "1", true)
+                Os.setenv("OSG_TEXT_SHADER_TECHNIQUE", "ALL", true)
             } catch (e: ErrnoException) {
                 Log.e("OpenMW", "Failed setting environment variables.")
                 e.printStackTrace()
@@ -95,18 +87,12 @@ class GameActivity : SDLActivity() {
 
         }
 
-        val envline: String = PreferenceManager.getDefaultSharedPreferences(this).getString("envLine", "").toString()
-        if (envline.length > 0) {
-            val envs: List<String> = envline.split(" ", "\n")
-            var i = 0
-
-            repeat(envs.count())
-            {
-                val env: List<String> = envs[i].split("=")
-                if (env.count() == 2) Os.setenv(env[0], env[1], true)
-                i = i + 1
-            }
-        }
+        val omwDebugLevel = prefs!!.getString("pref_debug_level", "")
+        if (omwDebugLevel == "DEBUG") Os.setenv("OPENMW_DEBUG_LEVEL", "DEBUG", true)
+        if (omwDebugLevel == "VERBOSE") Os.setenv("OPENMW_DEBUG_LEVEL", "VERBOSE", true)
+        if (omwDebugLevel == "INFO") Os.setenv("OPENMW_DEBUG_LEVEL", "INFO", true)
+        if (omwDebugLevel == "WARNING") Os.setenv("OPENMW_DEBUG_LEVEL", "WARNING", true)
+        if (omwDebugLevel == "ERROR") Os.setenv("OPENMW_DEBUG_LEVEL", "ERROR", true)
 
         System.loadLibrary("GL")
         System.loadLibrary("openmw")
@@ -157,12 +143,6 @@ class GameActivity : SDLActivity() {
         if (hasFocus) {
             hideAndroidControls(this)
         }
-    }
-
-    override fun getArguments(): Array<String> {
-        val cmd = PreferenceManager.getDefaultSharedPreferences(this).getString("commandLine", "")
-        val commandlineParser = CommandlineParser(cmd!!)
-        return commandlineParser.argv
     }
 
     private external fun getPathToJni(path_global: String, path_user: String)

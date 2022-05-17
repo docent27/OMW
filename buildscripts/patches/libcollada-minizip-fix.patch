@@ -1,0 +1,12 @@
+
+--- dom/external-libs/minizip-1.1/ioapi.h	2021-11-14 15:14:43.676418790 +0100
++++ dom/external-libs/minizip-1.1/ioapi.h	2021-11-14 15:14:50.468378154 +0100
+@@ -44,7 +44,7 @@
+ #include <stdlib.h>
+ #include "zlib.h"
+
+-#if defined(USE_FILE32API)
++#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__DragonFly__) || defined(__OpenBSD__) || defined(__APPLE__) || defined(__ANDROID__)
+ #define fopen64 fopen
+ #define ftello64 ftell
+ #define fseeko64 fseek

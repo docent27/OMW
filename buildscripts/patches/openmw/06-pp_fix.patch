@@ -1,0 +1,25 @@
+From f6f7aa63a5505f621073ea54e79fba0d7a23c89a Mon Sep 17 00:00:00 2001
+From: Docent27 <docent27@ukr.net>
+Date: Tue, 17 May 2022 11:23:22 +0300
+Subject: [PATCH] pp_fix
+
+---
+ apps/openmw/mwrender/postprocessor.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/apps/openmw/mwrender/postprocessor.cpp b/apps/openmw/mwrender/postprocessor.cpp
+index df42daa..a160ef9 100644
+--- a/apps/openmw/mwrender/postprocessor.cpp
++++ b/apps/openmw/mwrender/postprocessor.cpp
+@@ -115,7 +115,7 @@ namespace MWRender
+ #endif
+ 
+         if (ext->glDisablei)
+-            mNormalsSupported = true;
++            mNormalsSupported = false;
+         else
+             Log(Debug::Error) << "'glDisablei' unsupported, pass normals will not be available to shaders.";
+ 
+--
+libgit2 0.28.4
+
