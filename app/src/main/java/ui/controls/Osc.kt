@@ -378,14 +378,14 @@ class Osc {
     private val qp: OscHiddenToggle
 
     init {
-        val btnRowSpacing = 74
+        val btnRowSpacing = 102//74
         val btnColumnSpacing = 65
 
         // Fn buttons: F1, F3, F4, F10, F11 are the only ones we care about
-        arrayOf(1, 3, 4, 10, 11).forEachIndexed{ i, el ->
+        arrayOf(1, 3, 4, 12).forEachIndexed{ i, el ->
             val code = 130 + el
-            val column = (i + 1) / 4 + 2
-            val row = (i + 1) % 4 + 1
+            val column = (i + 1) / 5 + 2
+            val row = (i + 1) % 5 + 1
             fnButtons.add(OscHiddenButton("f$el", OscVisibility.NULL,
                 btnColumnSpacing * column, btnRowSpacing * row, "F$el", code))
         }
@@ -395,8 +395,8 @@ class Osc {
         // Quick buttons: 0 to 9
         for (i in 0..9) {
             val code = KeyEvent.KEYCODE_0 + i
-            val column = (i + 1) / 9
-            val row = (i + 1) % 9 + 1
+            val column = (i + 1) / 6
+            val row = (i + 1) % 6 + 1
             quickButtons.add(OscHiddenButton("qp$i", OscVisibility.NULL,
                 btnColumnSpacing * column, btnRowSpacing * row, "$i", code))
         }
