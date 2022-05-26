@@ -64,6 +64,7 @@
     <string name="pref_preset01">1 - Продуктивніcть</string>
     <string name="pref_preset02">2 - Збалансованість</string>
     <string name="pref_preset03">3 - Якість зображення</string>
+    <string name="tab_groundcovers">Анімована Трава</string>
 
     <string-array name="pref_graphicsLibrary_entries">
         <item>GLESv1</item>

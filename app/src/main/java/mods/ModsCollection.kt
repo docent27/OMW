@@ -34,6 +34,8 @@ class ModsCollection(private val type: ModType,
     val mods = arrayListOf<Mod>()
     private var extensions: Array<String> = if (type == ModType.Resource)
         arrayOf("bsa")
+    else if (type == ModType.Groundcover)
+        arrayOf("esp")
     else
         arrayOf("esm", "esp", "omwaddon", "omwgame")
 

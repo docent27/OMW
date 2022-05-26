@@ -58,7 +58,7 @@ open class OscElement(
         val defaultX: Int,
         val defaultY: Int,
         private val defaultSize: Int = CONTROL_DEFAULT_SIZE,
-        private val defaultOpacity: Float = 0.4f
+        private val defaultOpacity: Float = 0.1f
 ) {
 
     private var opacity = defaultOpacity
@@ -352,7 +352,7 @@ class Osc {
 
         btnTopToggle,
         OscImageButton("inventory", OscVisibility.NULL,
-            R.drawable.inventory, 940, 95, 3, true),
+            R.drawable.inventory, 940, 120, 3, true),
         OscImageButton("crouch", OscVisibility.NORMAL,
                 R.drawable.sneak, 940 - TOP_BAR_SPACING, 0, 113),
         OscImageButton("pause", OscVisibility.ESSENTIAL,
