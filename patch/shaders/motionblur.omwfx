@@ -1,0 +1,105 @@
+shared {
+    const int N = 10;
+    const float mult_rot = 0.5 / 100.0; // Multiplier for rotational blur.
+    const float mult_mov = 2.00 / 100.0; // Multiplier for movement blur.
+    const float mask_distance = 1000.0; // Set higher, if your hands/weapon get blurred.
+    const float max_blur = 16.0; // Maximum blur about in % of screen width.
+
+    #define fov omw.fov
+    float frametime = (1000.0/16.0)/1000.0;
+
+    #define rcpres vec2(1.0 / omw.resolution.xy)
+
+    float time;
+
+    #define suncol omw.sunColor.rgb
+
+    #define mult_now (mult_rot / mult_mov)
+    #define t ( 2.0 * tan(radians(fov * 0.5)) * vec2( 1.0, rcpres.x / rcpres.y ))
+    const float sky = 100000.0;
+    #define raspect (rcpres.x / rcpres)
+    #define max_blur_m (max_blur / 100.0)
+
+    vec3 toView(vec2 tex, float depth)
+    {
+        vec2 xy = (tex - 0.5) * depth * t;
+        return vec3(xy, depth);
+    }
+
+    vec2 fromView(vec3 view)
+    {
+        return vec2(view.xy / t / view.z + 0.5);
+    }
+
+    float getLinearDepth(in vec2 tex)
+    {
+        float d = omw_GetDepth(tex);
+
+        float ndc = d * 2.0 - 1.0;
+
+        return omw.near * omw.far / (omw.far + ndc * (omw.near - omw.far));
+    }
+}
+
+fragment mask {
+
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        bool mask = getLinearDepth(omw_TexCoord) > mask_distance;
+        omw_FragColor = mask ? omw_GetLastShader(omw_TexCoord) : vec4(0,0,0,1);
+    }
+}
+
+fragment main {
+
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        float depth = min(getLinearDepth(omw_TexCoord), sky);
+
+        float mask = float(depth > mask_distance);
+
+        vec4 now = vec4(toView(omw_TexCoord, depth) * mult_now, 1.0 );
+
+        vec4 then = omw.prevViewMatrix * omw.invViewMatrix * now;
+        vec2 motion = omw_TexCoord - fromView(then.xyz);
+
+        float m = length(motion * raspect);
+
+        m = min( m, max_blur_m ) / m / frametime * mult_rot;
+        motion *= max(0.0, m);
+
+        vec2 s_uv = omw_TexCoord - motion ;
+
+        motion /= float( N );
+        vec4 color = vec4(0.0);
+
+        if(bool(mask))
+        {
+            for (int i = 0; i <= 2 * N; i++)
+            {
+                vec4 col = pow(omw_GetLastPass(s_uv), vec4(2.2));
+                // float b = 0.33;
+                float b = 2.0;
+                vec4 bcol = (col * max((col - b) * 1000000.0 + b, b))/b;
+                col = mix(col, bcol, max(float(omw.isInterior), (1.0 - step(0.2, suncol.x))));
+                color += col;
+
+                s_uv += motion;
+            }
+            color /= float(N * 2 + 1);
+        }
+
+        omw_FragColor = depth > mask_distance * 1.1 ? vec4(pow(color.xyz, vec3(1.0/2.2)),1.0) : omw_GetLastShader(omw_TexCoord);
+    }
+}
+
+technique {
+    passes = mask, main;
+    description = "Motion Blur(Camera)";
+    author = "Vtastek";
+    version = "1.1";
+}

@@ -1,0 +1,166 @@
+sampler_2d noise {
+    source = "shaders/textures/noise64.dds";
+    mag_filter = nearest;
+    min_filter = nearest;
+    wrap_s = repeat;
+    wrap_t = repeat;
+}
+
+uniform_float fr {
+    default = 60.0;
+    min = 0.0;
+    max = 120.0;
+    step = 1.0;
+    description = "Retina focal point, dpt";
+}
+
+uniform_float fp {
+    default = 60.0;
+    min = 0.0;
+    max = 120.0;
+    step = 1.0;
+    description = "Eye relaxed focal power, dpt";
+}
+
+uniform_float fpa {
+    default = 10.0;
+    min = 0.0;
+    max = 30.0;
+    step = 1.0;
+    description = "Accomodation, dpt";
+}
+
+uniform_float pupil {
+    default = 0.006;
+    min = 0.001;
+    max = 1.0;
+    step = 0.001;
+    description = "Pupil diameter, m";
+}
+
+uniform_float blur_radius {
+    default = 0.275;
+    min = 0.0;
+    max = 1.0;
+    step = 0.025;
+    description = "Base blur radius";
+}
+
+uniform_float blur_falloff {
+    default = 2.0;
+    min = 0.1;
+    max = 10.0;
+    step = 0.1;
+    description = "More means more blur and less respect for edges";
+}
+
+uniform_float R {
+    default = 6.0;
+    min = 1.0;
+    max = 100.0;
+    step = 1.0;
+    description = "Maximum blur radius in pixels";
+}
+
+shared {
+
+    #define t (2.0 * tan(radians(0.5 * omw.fov)))
+    #define k 0.00001
+    #define unit2m 0.0142
+    #define eps 0.000001
+    #define fogoffset clamp(-omw.fogNear / (omw.fogFar - omw.fogNear), 0.0, 1.0)
+
+    #define ROTATE // Random rotation on, if defined.
+
+    #define rcpres vec2(1.0 / omw.resolution)
+    #define Rfixed (R / (1280.0 * rcpres.x))
+}
+
+fragment dof {
+    omw_In vec2 omw_TexCoord;
+
+    float getLinearDepth(in vec2 tex)
+    {
+        float d = omw_GetDepth(tex);
+        float ndc = d * 2.0 - 1.0;
+
+        return omw.near * omw.far / (omw.far + ndc * (omw.near - omw.far));
+    }
+
+    void main()
+    {
+        float s = getLinearDepth(vec2(0.5)) * unit2m;
+        float depth = getLinearDepth(omw_TexCoord);
+
+        float z_corr = length(vec3((omw_TexCoord.x - 0.5) * t, (omw_TexCoord.y - 0.5) * t / rcpres.y * rcpres.x, 1.0));
+        float z = z_corr * unit2m * depth;
+        float savemyhands = smoothstep(0.568, 0.781, z);
+
+        float fpf = clamp(1.0 / s + fr, fp, fp + fpa);
+        float c = pupil * (fr - fpf + 1.0 / z) / fr / k * blur_radius;
+        float fog = fogoffset * clamp(z / (4.0 * omw.fogFar * unit2m), 0.0, 1.0);
+
+        c = min(abs(c / Rfixed) + fog, 1.0) * savemyhands;
+        omw_FragColor = vec4(omw_GetLastShader(omw_TexCoord).rgb, c);
+    }
+}
+
+fragment smartblur {
+    omw_In vec2 omw_TexCoord;
+
+    #define M 12
+    vec2 taps(int i)
+    {
+        if (i==0) return vec2(-0.326212,-0.40581);
+        else if (i==1) return vec2(-0.840144,-0.07358);
+        else if (i==2) return vec2(-0.695914,0.457137);
+        else if (i==3) return vec2(-0.203345,0.620716);
+        else if (i==4) return vec2(0.96234,-0.194983);
+        else if (i==5) return vec2(0.473434,-0.480026);
+        else if (i==6) return vec2(0.519456,0.767022);
+        else if (i==7) return vec2(0.185461,-0.893124);
+        else if (i==8) return vec2(0.507431,0.064425);
+        else if (i==9) return vec2(0.89642,0.412458);
+        else if (i==10) return vec2(-0.32194,-0.932615);
+        else if (i==11) return vec2(-0.791559,-0.59771);
+        else return vec2(0);
+    }
+
+    void main()
+    {
+        vec4 color = omw_GetLastPass(omw_TexCoord); //FIXME: mirror
+        float c = color.a * Rfixed;
+
+    #ifdef ROTATE
+        vec2 rnd = normalize(texture2D(noise, omw_TexCoord / rcpres / 64.0).xy * 2.0 + 1.0);
+    #endif
+
+        float amount = 1.0;
+        for(int i = 0; i < M; i++)
+        {
+    #ifdef ROTATE
+            vec2 dir = reflect(taps(i), rnd);
+    #else
+            vec2 dir = taps(i);
+    #endif
+
+            vec2 s_tex = omw_TexCoord + rcpres * dir * c;
+            vec4 s_color = omw_GetLastPass(s_tex); //FIXME: mirror
+            float s_c = s_color.a * Rfixed;
+            float weight = exp2(-abs(c - s_c) / blur_falloff);
+
+            color += s_color * weight;
+            amount += weight;
+        }
+
+        omw_FragColor = vec4(color.rgb / amount, 1.0);
+    }
+}
+
+technique {
+    passes = dof, smartblur;
+    description = "Depth of Field";
+    author = "Knu";
+    version = "1.0";
+    flags = Disable_Interiors;
+}

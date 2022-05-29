@@ -1,0 +1,477 @@
+uniform_int bloom_quality {
+    default = 3;
+    min = 1;
+    max = 3;
+    step = 1;
+    description = "This controls the quality of the bloom. 1 is basic, cheap bloom (twice-blurred), 2 is standard g6 quality, and 3 is SM3.0 high-quality bloom.";
+}
+
+uniform_float bloom_mult_global {
+    default = 0.22;
+    min = 0.0;
+    max = 1.0;
+    step = 0.01;
+    description = "The overall multiplier for bloom. Effects all areas.";
+}
+
+uniform_float bloom_mult_uwater {
+    default = 1.2;
+    min = 0.0;
+    max = 10.0;
+    step = 0.1;
+    description = "Underwater mutliplier for bloom. Only takes effect when the camera is underwater.";
+}
+
+uniform_float bloom_mult_inside {
+    default = 1.1;
+    min = 0.0;
+    max = 10.0;
+    step = 0.1;
+    description = "Interior multiplier for bloom. Can combine with bloom_mult_uwater when both are true.";
+}
+
+uniform_float bloom_mult_outside {
+    default = 0.8;
+    min = 0.0;
+    max = 10.0;
+    step = 0.1;
+    description = "Exterior multiplier for bloom. Can combine with bloom_mult_uwater when both are true.";
+}
+
+uniform_float bloom_cutoff {
+    default = 0.72;
+    min = 0.0;
+    max = 1.0;
+    step = 0.02;
+    description = "Effects the strength and focus of highlights (higher produces softer, weaker highlights).";
+}
+
+uniform_float bloom_power {
+    default = 1.1;
+    min = 0.0;
+    max = 10.0;
+    step = 0.1;
+    description = "Effects the focus and hue of highlights (higher creates more narrow, single-color highlights)";
+}
+
+uniform_bool dark_bloom {
+    default = true;
+    description = "Darkens/lightens scene. Off will brighten the scene but uses a more accurate divisor";
+}
+
+uniform_bool first_person_bloom {
+    default = false;
+    description = "Use bloom for first-person meshes.";
+}
+
+shared {
+    const float sky = float(1e6);
+    #define rcpres vec2(1.0 / omw.resolution)
+
+    float getLinearDepth(in vec2 tex)
+    {
+        float d = omw_GetDepth(tex);
+        float ndc = d * 2.0 - 1.0;
+
+        return omw.near * omw.far / (omw.far + ndc * (omw.near - omw.far));
+    }
+}
+
+fragment blurHorI {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 Color = omw_GetLastPass(omw_TexCoord);
+
+        float div = 0.0;
+        if (dark_bloom)
+            div = 4.7;
+        else
+            div = 4.2;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*1.0), omw_TexCoord.y)) * 0.8;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*1.0), omw_TexCoord.y)) * 0.8;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*2.0), omw_TexCoord.y)) * 0.65;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*2.0), omw_TexCoord.y)) * 0.65;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*3.0), omw_TexCoord.y)) * 0.4;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*3.0), omw_TexCoord.y)) * 0.4;
+
+        if (bloom_quality >= 2)
+        {
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*4.0), omw_TexCoord.y)) * 0.25;
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*4.0), omw_TexCoord.y)) * 0.25;
+            if (dark_bloom)
+                div = 5.2;
+            else
+                div = 4.7;
+
+            if (bloom_quality >= 2)
+            {
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*5.0), omw_TexCoord.y)) * 0.15;
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*5.0), omw_TexCoord.y)) * 0.15;
+
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*6.0), omw_TexCoord.y)) * 0.10;
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*6.0), omw_TexCoord.y)) * 0.10;
+                if (dark_bloom)
+                    div = 5.65;
+                else
+                    div = 5.2;
+            }
+        }
+
+        Color /= div;
+
+        omw_FragColor = Color*Color;
+    }
+}
+
+fragment blurHor2 {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 Color = omw_GetLastPass(omw_TexCoord);
+
+        float div = 0.0;
+        if (dark_bloom)
+            div = 4.7;
+        else
+            div = 4.2;
+
+        float spread = 1.0 - (Color.r * 0.3) + (Color.g * 0.6) + (Color.b * 0.1);
+        spread = (smoothstep(0.0, 0.7, spread) * 4.0) + 1.0;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*spread*1.0), omw_TexCoord.y)) * 0.8;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*spread*1.0), omw_TexCoord.y)) * 0.8;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*spread*2.0), omw_TexCoord.y)) * 0.65;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*spread*2.0), omw_TexCoord.y)) * 0.65;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*spread*3.0), omw_TexCoord.y)) * 0.4;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*spread*3.0), omw_TexCoord.y)) * 0.4;
+
+        if (bloom_quality >= 2)
+        {
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*spread*4.0), omw_TexCoord.y)) * 0.25;
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*spread*4.0), omw_TexCoord.y)) * 0.25;
+            if (dark_bloom)
+                div = 5.2;
+            else
+                div = 4.7;
+        }
+
+        Color /= div;
+
+        omw_FragColor = Color;
+    }
+}
+
+fragment blurHor3 {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 Color = omw_GetLastPass(omw_TexCoord);
+
+        if (bloom_quality <= 1)
+        {
+            omw_FragColor = Color;
+            return;
+        }
+
+        float div = 0.0;
+        if (dark_bloom)
+            div = 4.7;
+        else
+            div = 4.2;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*1.0), omw_TexCoord.y)) * 0.8;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*1.0), omw_TexCoord.y)) * 0.8;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*2.0), omw_TexCoord.y)) * 0.65;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*2.0), omw_TexCoord.y)) * 0.65;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*3.0), omw_TexCoord.y)) * 0.4;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*3.0), omw_TexCoord.y)) * 0.4;
+
+        if (bloom_quality >= 2)
+        {
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*4.0), omw_TexCoord.y)) * 0.25;
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*4.0), omw_TexCoord.y)) * 0.25;
+            if (dark_bloom)
+                div = 5.2;
+            else
+                div = 4.7;
+
+            if (bloom_quality >= 3)
+            {
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.y*5.0), omw_TexCoord.y)) * 0.15;
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.y*5.0), omw_TexCoord.y)) * 0.15;
+
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.y*6.0), omw_TexCoord.y)) * 0.10;
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.y*6.0), omw_TexCoord.y)) * 0.10;
+                if (dark_bloom)
+                    div = 5.65;
+                else
+                    div = 5.2;
+            }
+        }
+
+        Color /= div;
+
+        omw_FragColor = Color;
+    }
+}
+
+fragment blurVertI {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 Color = omw_GetLastPass(omw_TexCoord);
+
+        float div = 0.0;
+        if (dark_bloom)
+            div = 4.7;
+        else
+            div = 4.2;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*1.0), omw_TexCoord.y)) * 0.8;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*1.0), omw_TexCoord.y)) * 0.8;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*2.0), omw_TexCoord.y)) * 0.65;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*2.0), omw_TexCoord.y)) * 0.65;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*3.0), omw_TexCoord.y)) * 0.4;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*3.0), omw_TexCoord.y)) * 0.4;
+
+        if (bloom_quality >= 2)
+        {
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*4.0), omw_TexCoord.y)) * 0.25;
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*4.0), omw_TexCoord.y)) * 0.25;
+            if (dark_bloom)
+                div = 5.2;
+            else
+                div = 4.7;
+
+            if (bloom_quality >= 3)
+            {
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.y*5.0), omw_TexCoord.y)) * 0.15;
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.y*5.0), omw_TexCoord.y)) * 0.15;
+
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.y*6.0), omw_TexCoord.y)) * 0.10;
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.y*6.0), omw_TexCoord.y)) * 0.10;
+                if (dark_bloom)
+                    div = 5.65;
+                else
+                    div = 5.2;
+
+            }
+        }
+
+        Color /= div;
+
+        omw_FragColor = Color;
+    }
+}
+
+fragment blurVert2 {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 Color = omw_GetLastPass(omw_TexCoord);
+
+        float div = 0.0;
+        if (dark_bloom)
+            div = 4.7;
+        else
+            div = 4.2;
+
+        float spread = 1.0 - (Color.r * 0.3) + (Color.g * 0.6) + (Color.b * 0.1);
+        spread = smoothstep(0.0, 0.7, spread) * 4.0 + 1.0;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*spread*1.0), omw_TexCoord.y)) * 0.8;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*spread*1.0), omw_TexCoord.y)) * 0.8;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*spread*2.0), omw_TexCoord.y)) * 0.65;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*spread*2.0), omw_TexCoord.y)) * 0.65;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*spread*3.0), omw_TexCoord.y)) * 0.4;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*spread*3.0), omw_TexCoord.y)) * 0.4;
+
+        if (bloom_quality >= 2)
+        {
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x-(rcpres.x*spread*4.0), omw_TexCoord.y)) * 0.25;
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x+(rcpres.x*spread*4.0), omw_TexCoord.y)) * 0.25;
+            if (dark_bloom)
+                div = 5.2;
+            else
+                div = 4.7;
+        }
+
+        Color /= div;
+
+        omw_FragColor = Color;
+    }
+}
+
+fragment blurVert3 {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 Color = omw_GetLastPass(omw_TexCoord);
+
+        if (bloom_quality <= 1)
+        {
+            omw_FragColor = Color;
+            return;
+        }
+
+        float div = 0.0;
+        if (dark_bloom)
+            div = 4.7;
+        else
+            div = 4.2;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y-(rcpres.y*1.0))) * 0.8;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y+(rcpres.y*1.0))) * 0.8;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y-(rcpres.y*2.0))) * 0.65;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y+(rcpres.y*2.0))) * 0.65;
+
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y-(rcpres.y*3.0))) * 0.4;
+        Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y+(rcpres.y*3.0))) * 0.4;
+
+        if (bloom_quality >= 2)
+        {
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y-(rcpres.y*4.0))) * 0.25;
+            Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y+(rcpres.y*4.0))) * 0.25;
+            if (dark_bloom)
+                div = 5.2;
+            else
+                div = 4.7;
+
+            if (bloom_quality >= 3)
+            {
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y-(rcpres.y*5.0))) * 0.15;
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y+(rcpres.y*5.0))) * 0.15;
+
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y-(rcpres.y*6.0))) * 0.10;
+                Color += omw_GetLastPass(vec2(omw_TexCoord.x, omw_TexCoord.y+(rcpres.y*6.0))) * 0.10;
+                if (dark_bloom)
+                    div = 5.65;
+                else
+                    div = 5.2;
+            }
+        }
+
+        Color /= div;
+
+        omw_FragColor = Color;
+    }
+}
+
+fragment brightPass {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 c = omw_GetLastPass(omw_TexCoord);
+        if (bloom_quality <= 1)
+        {
+            omw_FragColor = c;
+            return;
+        }
+
+        vec4 cB = c;
+
+        c = smoothstep(0.0, bloom_cutoff, c);
+        c = pow(c, vec4(bloom_power));
+        c += smoothstep(bloom_cutoff, 0.5+bloom_cutoff, cB);
+        c.a = 1.0;
+
+        omw_FragColor = c;
+    }
+}
+
+fragment recombA {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        if (bloom_quality <= 1)
+        {
+            omw_FragColor = omw_GetLastPass(omw_TexCoord);
+            return;
+        }
+
+        float d = min(getLinearDepth(omw_TexCoord), sky);
+        vec4 cB = omw_GetLastShader(omw_TexCoord);
+        if (d > omw.fogNear)
+            cB.rgb *= 0.0;
+        if (!first_person_bloom)
+            cB.rgb *= smoothstep(35.0, 50.0, d);
+
+        vec4 c = omw_GetLastPass(omw_TexCoord);
+
+        c = smoothstep(0.0, bloom_cutoff, c);
+        c += smoothstep(bloom_cutoff-0.5, bloom_cutoff+0.5, cB);
+
+        omw_FragColor = clamp(c, 0.0, 1.0);
+    }
+}
+
+fragment tB0 {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        // grab scene and blurred highlights
+        vec4 scene = omw_GetLastShader(omw_TexCoord);
+        vec4 blur = omw_GetLastPass(omw_TexCoord);
+        vec4 highlights = vec4(0.0);
+
+        // apply all needed mults
+        blur *= bloom_mult_global;
+
+        if (omw.isInterior)
+            blur *= bloom_mult_inside;
+        else
+            blur *= bloom_mult_outside;
+
+        if (omw.isUnderwater)
+            blur *= bloom_mult_uwater;
+
+        scene += blur;
+
+        omw_FragColor = scene;
+    }
+}
+
+fragment doDepthFix {
+    // FIXME: recombA, blurHor3, blurVert3 passes are optional, work around as "if" so far.
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        float d = min(getLinearDepth(omw_TexCoord), sky);
+        vec4 Color = omw_GetLastShader(omw_TexCoord);
+        if (d > omw.fogNear)
+            Color.rgb *= 0.0;
+        if (!first_person_bloom)
+            Color.rgb *= smoothstep(35.0, 50.0, d);
+        omw_FragColor = Color;
+    }
+}
+
+technique {
+    passes = doDepthFix, blurHorI, blurVertI, brightPass, blurHor2, blurVert2, recombA, blurHor3, blurVert3, tB0;
+    description = "Bloom, soft";
+    author = "peachykeen";
+    version = "1.0";
+}

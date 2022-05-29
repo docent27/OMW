@@ -1,14 +1,14 @@
-From b9051d78ba4b147143536fc316ef8d724655fef2 Mon Sep 17 00:00:00 2001
+From a0880954dd258c8b7f8419c49f4a5340561a4579 Mon Sep 17 00:00:00 2001
 From: Docent27 <docent27@ukr.net>
-Date: Tue, 17 May 2022 17:53:45 +0300
-Subject: [PATCH] PP_HUD_FIX
+Date: Sun, 29 May 2022 22:42:35 +0300
+Subject: [PATCH] 07-pp_hud_fix
 
 ---
  files/mygui/openmw_postprocessor_hud.layout | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/files/mygui/openmw_postprocessor_hud.layout b/files/mygui/openmw_postprocessor_hud.layout
-index 1030c83..33cb6f0 100644
+index 7a04a2f..8948c00 100644
 --- a/files/mygui/openmw_postprocessor_hud.layout
 +++ b/files/mygui/openmw_postprocessor_hud.layout
 @@ -3,7 +3,7 @@
@@ -24,7 +24,7 @@ index 1030c83..33cb6f0 100644
  				<Property key="Padding" value="0"/>
  				<Property key="Spacing" value="8"/>
  
--				<Widget type="Widget" position ="0 0 0 400">
+-				<Widget type="Widget" position ="0 0 0 300">
 +				<Widget type="Widget" position ="0 0 0 200">
  					<UserString key="HStretch" value="true"/>
  					<UserString key="VStretch" value="false"/>

@@ -1,0 +1,70 @@
+uniform_float neutral_point {
+    default = 0.335;
+    min = 0.1;
+    max = 1.0;
+    step = 0.005;
+    description = "Neytral point";
+}
+
+uniform_float sensitivity {
+    default = 0.11;
+    min = 0.0;
+    max = 1.0;
+    step = 0.01;
+    description = "Sensitivity";
+}
+
+uniform_float max_exposure {
+    default = 3.2;
+    min = 0.1;
+    max = 10.0;
+    step = 0.1;
+    description = "Maximum exposure";
+}
+
+fragment tone {
+    //#define EXPOSURE_METER
+
+    varying vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 HDR = vec4(omw_GetEyeAdaptation());
+        float exposure = clamp(mix(1.0, neutral_point / HDR.x, sensitivity), 0.5, max_exposure) * sqrt(HDR.y/HDR.x);
+        float scotopic = 0.5 * clamp(exposure / max_exposure - 0.66666, 0.0, 1.0);
+
+        vec3 c = omw_GetLastShader(omw_TexCoord).rgb;
+
+        // Increase dynamic range in low light
+        vec3 g = exposure * c + (1.0 - exposure) * pow(c, vec3(4.0));
+
+        // Film response toe/knee contrast
+        // 0.727408x^4 - 2.05477x^3 + 1.63747x^2 + 0.712032x
+        g = (((0.727408 * g + -2.05477) * g + 1.63747) * g + 0.712032) * g;
+
+        // Correct for over-saturation when exposure is high (scotopic vision)
+        g = mix(g, vec3(dot(g, vec3(0.33333))), vec3(scotopic));
+
+        // Exposure meters
+        #ifdef EXPOSURE_METER
+
+        // HDR lumi meter
+        if(omw_TexCoord.x < HDR.x && omw_TexCoord.y > 0.95) g = mix(g, vec3(1.0), vec3(0.2));
+        if(abs(omw_TexCoord.x - neutral_point) < 0.004 && omw_TexCoord.y > 0.95) g = mix(g, vec3(1.0), vec3(0.14));
+        // Exposure multiplier meter
+        if(omw_TexCoord.x < exposure/max_exposure && omw_TexCoord.y > 0.9 && omw_TexCoord.y < 0.94) g = mix(g, vec3(1.0), vec3(0.2));
+        if(abs(omw_TexCoord.x - 1.0/max_exposure) < 0.004 && omw_TexCoord.y > 0.9 && omw_TexCoord.y < 0.94) g = mix(g, vec3(1.0), vec3(0.14));
+
+        #endif
+
+        omw_FragColor = vec4(clamp(g, 0.0, 1.0), 1.0);
+    }
+}
+
+technique {
+    passes = tone;
+    description = "HDR";
+    author = "Hrnchamd";
+    version = "1.0";
+    hdr = true;
+}

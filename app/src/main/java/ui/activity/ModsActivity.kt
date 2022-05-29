@@ -60,6 +60,7 @@ class ModsActivity : AppCompatActivity() {
         // Set up adapters for the lists
         setupModList(findViewById(R.id.list_mods), ModType.Plugin)
         setupModList(findViewById(R.id.list_resources), ModType.Resource)
+        setupModList(findViewById(R.id.list_groundcovers), ModType.Groundcover)
     }
 
     /**

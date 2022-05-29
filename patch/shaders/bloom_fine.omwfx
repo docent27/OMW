@@ -1,0 +1,120 @@
+uniform_float bloomThreshold {
+    default = 0.48;
+    min = 0.0;
+    max = 1.0;
+    step = 0.05;
+    description = "0.0 everything blooms <-> 1.0 nothing blooms";
+}
+
+uniform_float bloomLevel {
+    default = 0.43;
+    min = 0.0;
+    max = 1.0;
+    step = 0.05;
+    description = "0.0 minimum glow <-> 1.0 nuclear shine";
+}
+
+uniform_float bloomColourSens {
+    default = 0.59;
+    min = 0.0;
+    max = 1.0;
+    step = 0.05;
+    description = "0.0 monochrome <-> 1.0 oversaturated";
+}
+
+uniform_float bloomGamma {
+    default = 3.45;
+    min = 0.0;
+    max = 5.0;
+    step = 0.05;
+    description = "for linear domain mixing (Morrowind is somewhat dark)";
+}
+
+shared {
+    const int N = 7;
+    //const float kernel[N] = float[](0.05, 0.14, 0.31, 0.22, 0.31, 0.14, 0.05);
+    //const float taps[N] = float[](-6.5, -4.5, -2.5, 0, 2.5, 4.5, 6.5);
+
+    #define rcpResolution vec2(1.0 / omw.resolution)
+
+    float linearize(in float d)
+    {
+        float z_n = 2.0 * d - 1.0;
+        return 2.0 * omw.near * omw.far / (omw.far + omw.near - z_n * (omw.far - omw.near));
+    }
+}
+
+fragment energeyLevels {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {        
+        vec4 radiance = omw_GetLastShader(omw_TexCoord);
+        float depth = linearize(omw_GetDepth(omw_TexCoord));
+        float lum = dot(vec3(0.27, 0.54, 0.19), radiance.rgb);
+
+        // Mix with luminance to avoid oversaturated single channels
+        radiance = mix(vec4(lum), radiance, bloomColourSens);
+
+        // Cut sky/distant illumination down
+        radiance *= 1.0 - 0.45 * clamp(2.0 * (depth - omw.fogNear) / (omw.fogFar - omw.fogNear), 0.0, 1.0);
+
+        omw_FragColor = clamp(radiance - bloomThreshold, 0.0, 1.0);
+    }
+}
+
+
+fragment blurVert {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {        
+        vec4 radiance = vec4(0.0);
+        
+        //for(int i = 0; i < N; ++i)
+           // radiance += kernel[i] * omw_GetLastPass(omw_TexCoord + vec2(0, rcpResolution.y * taps[i]));
+
+        radiance += 0.05 * omw_GetLastPass(omw_TexCoord + vec2(0, rcpResolution.y * -6.5));
+        radiance += 0.14 * omw_GetLastPass(omw_TexCoord + vec2(0, rcpResolution.y * -4.5));
+        radiance += 0.31 * omw_GetLastPass(omw_TexCoord + vec2(0, rcpResolution.y * -2.5));
+        radiance += 0.22 * omw_GetLastPass(omw_TexCoord + vec2(0, rcpResolution.y * 0.0));
+        radiance += 0.31 * omw_GetLastPass(omw_TexCoord + vec2(0, rcpResolution.y * 2.5));
+        radiance += 0.14 * omw_GetLastPass(omw_TexCoord + vec2(0, rcpResolution.y * 4.5));
+        radiance += 0.05 * omw_GetLastPass(omw_TexCoord + vec2(0, rcpResolution.y * 6.5));
+
+        omw_FragColor = radiance;
+    }
+}
+
+
+fragment blurHorzCombine {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {        
+        vec4 base = omw_GetLastShader(omw_TexCoord);
+        vec4 radiance = vec4(0.0);
+        
+        //for(int i = 0; i < N; ++i)
+            //radiance += kernel[i] * omw_GetLastPass(omw_TexCoord + vec2(rcpResolution.x * taps[i], 0));
+
+        radiance += 0.05 * omw_GetLastPass(omw_TexCoord + vec2(rcpResolution.y * -6.5, 0.0));
+        radiance += 0.14 * omw_GetLastPass(omw_TexCoord + vec2(rcpResolution.y * -4.5, 0.0));
+        radiance += 0.31 * omw_GetLastPass(omw_TexCoord + vec2(rcpResolution.y * -2.5, 0.0));
+        radiance += 0.22 * omw_GetLastPass(omw_TexCoord + vec2(rcpResolution.y * 0.0, 0.0));
+        radiance += 0.31 * omw_GetLastPass(omw_TexCoord + vec2(rcpResolution.y * 2.5, 0.0));
+        radiance += 0.14 * omw_GetLastPass(omw_TexCoord + vec2(rcpResolution.y * 4.5, 0.0));
+        radiance += 0.05 * omw_GetLastPass(omw_TexCoord + vec2(rcpResolution.y * 6.5, 0.0));
+
+        // Mix in linear space
+        base = pow(base, vec4(bloomGamma));
+        omw_FragColor = pow(base + bloomLevel * radiance, vec4(1.0/bloomGamma));
+    }
+}
+
+technique {
+    passes = energeyLevels, blurVert, blurHorzCombine;
+    description = "Bloom, fine";
+    author = "Hrnchamd";
+    version = "2.0";
+}

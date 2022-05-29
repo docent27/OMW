@@ -1,0 +1,147 @@
+shared {
+    const float neutral_point = 0.25;
+    const float sensitivity = 0.33;
+    const float max_exposure = 1.6;
+    #define exposure (omw_GetEyeAdaptation() * 10.0)
+    #define radius mix(0.1, 1.6, clamp(exposure/max_exposure, 0.0, 1.0) - 0.5)
+    const float contrast = 0.3;
+    const float saturation = 1.0;
+}
+
+fragment brightpass {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec3 col = omw_GetLastShader(omw_TexCoord).rgb;
+        float lum = dot(col, vec3(0.33,	0.33, 0.33));
+
+        //return float4(col, 1);
+        float sun = mix(0.75, 0.5, omw.sunColor.r);
+        lum = smoothstep(sun - 0.05, sun, lum);
+        
+        //float3 fringe = abs(fwidth(final));
+        //fringe = saturate(fringe - 0.1);
+        
+        //fringe = final +  final * float3(0.2,0.04, 0.0);
+        float halcol = smoothstep(0.9, 1.0, pow(length(col), 1.0/4.5));
+        //final += fringe.rgb;
+        omw_FragColor =vec4(pow(col * lum, vec3(1.5)), halcol);
+    }
+}
+
+fragment blurx {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 scene = omw_GetLastShader(omw_TexCoord);
+        vec2 p = omw_TexCoord;
+
+        vec2 rcprcp = omw.resolution;
+        rcprcp *= radius;
+        
+        vec4 blr = vec4(0.0);
+        vec4 power = vec4(2.0);
+        blr += pow(0.026109*omw_GetLastPass((omw_TexCoord+vec2(-15.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.034202*omw_GetLastPass((omw_TexCoord+vec2(-13.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.043219*omw_GetLastPass((omw_TexCoord+vec2(-11.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.052683*omw_GetLastPass((omw_TexCoord+vec2( -9.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.061948*omw_GetLastPass((omw_TexCoord+vec2( -7.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.070266*omw_GetLastPass((omw_TexCoord+vec2( -5.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.076883*omw_GetLastPass((omw_TexCoord+vec2( -3.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.081149*omw_GetLastPass((omw_TexCoord+vec2( -1.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.041312*omw_GetLastPass((omw_TexCoord+vec2(  0.0,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.081149*omw_GetLastPass((omw_TexCoord+vec2(  1.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.076883*omw_GetLastPass((omw_TexCoord+vec2(  3.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.070266*omw_GetLastPass((omw_TexCoord+vec2(  5.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.061948*omw_GetLastPass((omw_TexCoord+vec2(  7.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.052683*omw_GetLastPass((omw_TexCoord+vec2(  9.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.043219*omw_GetLastPass((omw_TexCoord+vec2( 11.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.034202*omw_GetLastPass((omw_TexCoord+vec2( 13.5,0.0)/rcprcp.xy) ), power);
+        blr += pow(0.026109*omw_GetLastPass((omw_TexCoord+vec2( 15.5,0.0)/rcprcp.xy) ), power);
+        //blr += 0.019227*samplePremul( s0, (TexD+float2( 17.5,0.0)/rcprcp.xy) ).xyz;
+        //blr += 0.013658*samplePremul( s0, (TexD+float2( 19.5,0.0)/rcprcp.xy) ).xyz;
+
+        blr /= pow(0.93423,2.0); // renormalize to compensate for the 4 taps I skipped
+    
+        omw_FragColor =blr * 16.0;
+    }
+}
+
+fragment blury {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec2 rcprcp = omw.resolution;
+        
+        rcprcp *= radius;
+        vec4 blr  = vec4(0.0);
+        //blr += 0.013658*sample0( s1, (TexD+float2(0.0,-19.5)/rcprcp.xy) ).xyz;
+        //blr += 0.019227*sample0( s1, (TexD+float2(0.0,-17.5)/rcprcp.xy) ).xyz;
+        blr += pow(0.026109,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,-15.5)/rcprcp.xy) );
+        blr += pow(0.034202,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,-13.5)/rcprcp.xy) );
+        blr += pow(0.043219,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,-11.5)/rcprcp.xy) );
+        blr += pow(0.052683,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0, -9.5)/rcprcp.xy) );
+        blr += pow(0.061948,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0, -7.5)/rcprcp.xy) );
+        blr += pow(0.070266,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0, -5.5)/rcprcp.xy) );
+        blr += pow(0.076883,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0, -3.5)/rcprcp.xy) );
+        blr += pow(0.081149,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0, -1.5)/rcprcp.xy) );
+        blr += pow(0.041312,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,  0.0)/rcprcp.xy) );
+        blr += pow(0.081149,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,  1.5)/rcprcp.xy) );
+        blr += pow( 0.076883,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,  3.5)/rcprcp.xy) );
+        blr += pow(0.070266,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,  5.5)/rcprcp.xy) );
+        blr += pow( 0.061948,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,  7.5)/rcprcp.xy) );
+        blr += pow(0.052683,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0,  9.5)/rcprcp.xy) );
+        blr += pow(0.043219,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0, 11.5)/rcprcp.xy) );
+        blr += pow(0.034202,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0, 13.5)/rcprcp.xy) );
+        blr += pow(0.026109,2.0)*omw_GetLastPass((omw_TexCoord+vec2(0.0, 15.5)/rcprcp.xy) );
+        //blr += 0.019227*sample0( s1, (TexD+float2(0.0, 17.5)/rcprcp.xy) ).xyz;
+        //blr += 0.013658*sample0( s1, (TexD+float2(0.0, 19.5)/rcprcp.xy) ).xyz;
+        
+        blr /= pow(0.93423, 2.0); // renormalize to compensate for the 4 taps I skipped
+        blr *= 16.0;
+        vec3 org = omw_GetLastShader(omw_TexCoord).rgb;
+        
+        vec3 col = pow(org, vec3(2.0));
+        blr *= mix(0.0, 1.0, clamp(exposure/max_exposure, 0.0, 1.0) - 0.5);
+        blr = clamp(blr, 0.0, 1.0);
+        col = col + blr.rgb - col * blr.rgb;
+        
+        vec3 halcol = blr.rgb * blr.a * 0.1 * vec3(0.6, 0.0091, 0.0);
+        col += clamp((halcol*30.0) - col, 0.0, 1.0); 
+        //col += halcol;
+
+        //col = col / (1.0 + col);
+        col = pow(col, vec3(1.0/2.0));
+	
+	    omw_FragColor =vec4(col, 1.0);
+    }
+}
+
+fragment specialcontrast {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 x = omw_GetLastPass(omw_TexCoord);
+        vec3 contrasted = vec3(x*x*x*(x*(x*6.0 - 15.0) + 10.0));
+        x.rgb = mix(x.rgb, contrasted, contrast);
+        vec3 sat = mix(vec3(dot(vec3(0.2125, 0.7154, 0.0721), x.rgb)), x.rgb, saturation);
+        
+        vec3 col = x.rgb;
+
+        col = mix(x.rgb, sat, 0.33 * (x.r+x.g+x.b));
+        
+        omw_FragColor =vec4(col,1);
+    }
+}
+
+technique {
+    passes = brightpass, blurx, blury, specialcontrast;
+    description = "Something I found lying around collecting dust. Exposure settings don't work since we don't have a function to calculate average scene luminance, it is a setting now.";
+    author = "Vtastek";
+    version = "1.0";
+    hdr = true;
+}

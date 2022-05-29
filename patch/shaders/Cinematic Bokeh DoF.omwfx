@@ -1,0 +1,124 @@
+uniform_int max_blur_size {
+	default = 18;
+	min = 0;
+	max = 100;
+	step = 1;
+	display_name = "Max Blur Size";
+}
+
+uniform_float focusLimit {
+	default = 3;
+	min = 0;
+	max = 10;
+	step = 0.1;
+	display_name = "Focus Limit";
+	description = "Prevent macro look from this distance";
+}
+
+uniform_float fsint {
+	default = 0.35;
+	min = 0;
+	max = 10;
+	step = 0.1;
+	display_name = "Interior Blur Scale";
+	description = "Blur area scaler for interior";
+}
+
+uniform_float fsout {
+	default = 0.45;
+	min = 0;
+	max = 10;
+	step = 0.1;
+	display_name = "Exterior Blur Scale";
+	description = "Blur area scaler for exterior";
+}
+
+uniform_float distdof {
+	default = 2000;
+	static = false;
+}
+
+
+fragment focusblur {
+	float unit2m = 0.0142;
+
+	// #define DEBUG
+
+	omw_In vec2 omw_TexCoord;
+
+	float getBlurSize(float depth, float focusPoint, float focusScale)
+	{
+		float a = max(focusPoint, focusLimit);
+		float b = depth - min(focusPoint, focusLimit) + focusLimit;
+		float coc = clamp((1.0 / a - 1.0 / b) * focusScale, -1.0, 1.0);
+
+		if (focusPoint < 5.0 && coc < 0.0)
+			coc *= 1.0/((6.0  - focusPoint));
+
+		return abs(coc) * 160.0 * 1.0/max(focusPoint, 5.0);
+	}
+
+    float getLinearDepth(in vec2 tex)
+    {
+        float d =  omw_GetDepth(tex);
+        float ndc = d * 2.0 - 1.0;
+
+        return omw.near * omw.far / (omw.far + ndc * (omw.near - omw.far));
+    }
+
+	void main()
+	{
+		float focusScale = fsout * (1.0 - float(omw.isInterior)) + fsint * float(omw.isInterior); // focus area size, exterior and interior
+		const int RAD_SCALE = 1;
+		const float GOLDEN_ANGLE = 2.39996323;
+		float centerDepth = getLinearDepth(omw_TexCoord) * unit2m;
+
+		float focusPoint = distdof * unit2m;
+		float centerSize = getBlurSize(centerDepth, focusPoint, focusScale);
+
+		vec3 color = omw_GetLastShader(omw_TexCoord).rgb;
+		color *= color;
+		float tot = 1.0;
+
+		float radius = float(RAD_SCALE);
+		float ang = 0.0;
+		float m = 1.0;
+
+		for (; int(radius) < max_blur_size;)
+		{
+			ang += GOLDEN_ANGLE;
+			vec2 tc = omw_TexCoord + vec2(cos(ang), sin(ang)) * omw.rcpResolution * radius;
+
+			vec3 sampleColor = omw_GetLastShader(tc).rgb;
+			sampleColor *= sampleColor;
+			float sampleDepth = getLinearDepth(tc) * unit2m;
+			float sampleSize = getBlurSize(sampleDepth, focusPoint, focusScale);
+			if (sampleDepth > centerDepth)
+				sampleSize = clamp(sampleSize, 0.0, centerSize * 2.0);
+
+			m = smoothstep(radius - 0.5, radius + 0.5, sampleSize);
+			color += mix(color/tot, sampleColor, m);
+			tot += 1.0;
+			radius += float(RAD_SCALE)/radius;
+		}
+		
+		#ifdef DEBUG
+		if(omw_TexCoord.x > 0.9)
+		{
+			omw_FragColor = vec4(distdof)/2000.0;
+			return;
+		}
+		#endif
+
+		omw_FragColor = vec4(sqrt(color/tot), 1.0);
+	}
+}
+
+
+technique {
+    passes = focusblur;
+    description = "CoC modification. From http://tuxedolabs.blogspot.com/2018/05/bokeh-depth-of-field-in-single-pass.html";
+    author = "Vtastek";
+    version = "1.0";
+    flags = Disable_Underwater, hidden;
+}

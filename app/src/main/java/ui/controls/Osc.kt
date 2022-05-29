@@ -58,7 +58,7 @@ open class OscElement(
         val defaultX: Int,
         val defaultY: Int,
         private val defaultSize: Int = CONTROL_DEFAULT_SIZE,
-        private val defaultOpacity: Float = 0.4f
+        private val defaultOpacity: Float = 0.1f
 ) {
 
     private var opacity = defaultOpacity
@@ -352,7 +352,7 @@ class Osc {
 
         btnTopToggle,
         OscImageButton("inventory", OscVisibility.NULL,
-            R.drawable.inventory, 940, 95, 3, true),
+            R.drawable.inventory, 940, 120, 3, true),
         OscImageButton("crouch", OscVisibility.NORMAL,
                 R.drawable.sneak, 940 - TOP_BAR_SPACING, 0, 113),
         OscImageButton("pause", OscVisibility.ESSENTIAL,
@@ -378,14 +378,14 @@ class Osc {
     private val qp: OscHiddenToggle
 
     init {
-        val btnRowSpacing = 74
+        val btnRowSpacing = 102
         val btnColumnSpacing = 65
 
         // Fn buttons: F1, F3, F4, F10, F11 are the only ones we care about
-        arrayOf(1, 2, 3, 4, 10, 11).forEachIndexed{ i, el ->
+        arrayOf(1, 2, 3, 12).forEachIndexed{ i, el ->
             val code = 130 + el
-            val column = (i + 1) / 4 + 2
-            val row = (i + 1) % 4 + 1
+            val column = (i + 1) / 5 + 2
+            val row = (i + 1) % 5 + 1
             fnButtons.add(OscHiddenButton("f$el", OscVisibility.NULL,
                 btnColumnSpacing * column, btnRowSpacing * row, "F$el", code))
         }
@@ -395,8 +395,8 @@ class Osc {
         // Quick buttons: 0 to 9
         for (i in 0..9) {
             val code = KeyEvent.KEYCODE_0 + i
-            val column = (i + 1) / 9
-            val row = (i + 1) % 9 + 1
+            val column = (i + 1) / 6
+            val row = (i + 1) % 6 + 1
             quickButtons.add(OscHiddenButton("qp$i", OscVisibility.NULL,
                 btnColumnSpacing * column, btnRowSpacing * row, "$i", code))
         }

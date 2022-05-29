@@ -9,10 +9,15 @@ cp patch/settings01.cfg app/src/main/assets/libopenmw/openmw/settings01.cfg
 cp patch/settings02.cfg app/src/main/assets/libopenmw/openmw/settings02.cfg
 cp patch/settings03.cfg app/src/main/assets/libopenmw/openmw/settings03.cfg
 cp patch/3rdparty-licenses.txt app/src/main/assets/libopenmw/3rdparty-licenses.txt
+cp patch/version app/src/main/assets/libopenmw/resources/version
 rm -rf app/src/main/assets/libopenmw/resources/vfs/shaders
 cp -R patch/shaders app/src/main/assets/libopenmw/resources/vfs/shaders
 rm -rf app/src/main/assets/libopenmw/resources/vfs/textures
 cp -R patch/textures app/src/main/assets/libopenmw/resources/vfs/textures
+cp patch/Ayembedt.ttf app/src/main/assets/libopenmw/resources/mygui/Ayembedt.ttf
+cp patch/DejaVuLGCSansMono.ttf app/src/main/assets/libopenmw/resources/mygui/DejaVuLGCSansMono.ttf
+cp patch/openmw_font.xml app/src/main/assets/libopenmw/resources/mygui/openmw_font.xml
+cp patch/Pelagiad.ttf app/src/main/assets/libopenmw/resources/mygui/Pelagiad.ttf
 # Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
 DEFAULT_JVM_OPTS=""
 

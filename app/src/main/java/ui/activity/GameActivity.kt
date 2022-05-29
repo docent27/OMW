@@ -77,6 +77,7 @@ class GameActivity : SDLActivity() {
                 Os.setenv("OPENMW_GLES_VERSION", "2", true)
                 Os.setenv("LIBGL_ES", "2", true)
                 Os.setenv("OSG_VERTEX_BUFFER_HINT", "VBO", true)
+                Os.setenv("LIBGL_USEVBO", "1", true)
                 Os.setenv("LIBGL_NOHIGHP", "1", true)
                 Os.setenv("LIBGL_NOPSA", "1", true)
                 Os.setenv("OSG_TEXT_SHADER_TECHNIQUE", "ALL", true)

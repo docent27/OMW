@@ -1,0 +1,267 @@
+sampler_2d noise {
+    source = "shaders/textures/poisson_nrm.dds";
+    mag_filter = nearest;
+    min_filter = nearest;
+    wrap_s = repeat;
+    wrap_t = repeat;
+}
+
+uniform_float max_ray_radius {
+    default = 1.0;
+    min = 1.0;
+    max = 100.0;
+    step = 1.0;
+    description = "Max ray radius, world units.";
+}
+
+uniform_float multiplier {
+    default = 1.8;
+    min = 0.1;
+    max = 10.0;
+    step = 0.1;
+    description = "Overall strength. 1.0 is the correct physical value.";
+}
+
+uniform_float occlusion_falloff {
+    default = 15.0;
+    min = 0.0;
+    max = 100.0;
+    step = 1.0;
+    description = "Occlusion falloff. More means less depth precision, and more strength.";
+}
+
+uniform_float blur_falloff {
+    default = 0.06;
+    min = 0.0;
+    max = 1.0;
+    step = 0.01;
+    description = "Blur depth falloff, more means a larger depth range is blurred.";
+}
+
+uniform_float blur_radius {
+    default = 4.0;
+    min = 0.0;
+    max = 100.0;
+    step = 1.0;
+    description = "Blur radius in pixels";
+}
+
+shared {
+
+    const float sky = 1000000.0;
+    #define N 6 // Samples: 48, 32, 16, 10, 6. More means precision and performance hit.
+
+    #define rcpres omw.rcpResolution
+
+    #define t vec2(2.0 * tan(radians(omw.fov * 0.5)) * vec2(1.0, rcpres.x / rcpres.y))
+
+    float getLinearDepth(in vec2 tex)
+    {
+        float d = omw_GetDepth(tex);
+        float ndc = d * 2.0 - 1.0;
+
+        return omw.near * omw.far / (omw.far + ndc * (omw.near - omw.far));
+    }
+
+    vec2 fromView(vec3 view)
+    {
+        return vec2(view.xy / t / view.z + 0.5);
+    }
+
+    vec3 toView(vec2 tex)
+    {
+        float depth = min(getLinearDepth(tex), sky);
+        vec2 xy = (tex - 0.5) * depth * t;
+        return vec3(xy, depth);
+    }
+}
+
+fragment ssao {
+    omw_In vec2 omw_TexCoord;
+
+    vec2 pack2(float f)
+    {
+        return vec2(f, fract(f * 255.0 - 0.5));
+    }
+
+    vec3 dirs(int i)
+    {
+    #if N >= 16
+        if(i==0) return vec3(-0.00941, -0.00326, -0.05597);
+        else if(i==1) return vec3(0.11686, 0.00831, 0.04915);
+        else if(i==2) return vec3(-0.08125, -0.24638, 0.30141);
+        else if(i==3) return vec3(0.35193, 0.29639, 0.47544);
+        else if(i==4) return vec3(0.32063, -0.70203, -0.40622);
+        else if(i==5) return vec3(-0.37344, -0.18112, 0.37140);
+        else if(i==6) return vec3(-0.73605, -0.39320, 0.04992);
+        else if(i==7) return vec3(0.02274, 0.21583, 0.19429);
+        else if(i==8) return vec3(0.00762, -0.01247, 0.03311);
+        else if(i==9) return vec3(-0.61057, 0.20510, 0.58876);
+        else if(i==10) return vec3(0.55319, 0.67960, -0.19194);
+        else if(i==11) return vec3(-0.43533, 0.62404, 0.45133);
+        else if(i==12) return vec3(-0.02386, -0.03104, 0.01502);
+        else if(i==13) return vec3(-0.20990, 0.10082, 0.03849);
+        else if(i==14) return vec3(0.06331, -0.17620, -0.31359);
+        else if(i==15) return vec3(-0.12261, 0.00720, -0.12465);
+        else return vec3(0.0);
+    #elif N >= 10
+        if(i==0) return vec3(-0.73605, -0.39320, 0.04992);
+        else if(i==1) return vec3(0.02274, 0.21583, 0.19429);
+        else if(i==2) return vec3(0.00762, -0.01247, 0.03311);
+        else if(i==3) return vec3(-0.61057, 0.20510, 0.58876);
+        else if(i==4) return vec3(0.55319, 0.67960, -0.19194);
+        else if(i==5) return vec3(-0.43533, 0.62404, 0.45133);
+        else if(i==6) return vec3(-0.02386, -0.03104, 0.01502);
+        else if(i==7) return vec3(-0.20990, 0.10082, 0.03849);
+        else if(i==8) return vec3(0.06331, -0.17620, -0.31359);
+        else if(i==9) return vec3(-0.12261, 0.00720, -0.12465);
+        else return vec3(0.0);
+    #elif N >= 8
+        if(i==0) return vec3(0.00762, -0.01247, 0.03311);
+        else if(i==1) return vec3(-0.61057, 0.20510, 0.58876);
+        else if(i==2) return vec3(0.55319, 0.67960, -0.19194);
+        else if(i==3) return vec3(-0.43533, 0.62404, 0.45133);
+        else if(i==4) return vec3(-0.02386, -0.03104, 0.01502);
+        else if(i==5) return vec3(-0.20990, 0.10082, 0.03849);
+        else if(i==6) return vec3(0.06331, -0.17620, -0.31359);
+        else if(i==7) return vec3(-0.12261, 0.00720, -0.12465);
+        else return vec3(0.0);
+    #else
+        if(i==0) return vec3(0.55319, 0.67960, -0.19194);
+        else if(i==1) return vec3(-0.43533, 0.62404, 0.45133);
+        else if(i==2) return vec3(-0.02386, -0.03104, 0.01502);
+        else if(i==3) return vec3(-0.20990, 0.10082, 0.03849);
+        else if(i==4) return vec3(0.06331, -0.17620, -0.31359);
+        else if(i==5) return vec3(-0.12261, 0.00720, -0.12465);
+        else return vec3(0.0);
+    #endif
+    }
+
+    void main()
+    {
+        const float depth_scale = 10000.0;
+
+        vec3 pos = toView(omw_TexCoord);
+        float xylength = sqrt(1.0 - omw.eyeVec.z * omw.eyeVec.z);
+
+        if(pos.z <= 0.0 || pos.z > sky)
+        {
+            omw_FragColor = vec4(0, 0, 0, 1);
+            return;
+        }
+
+        vec3 left = pos - toView(omw_TexCoord + rcpres * vec2(-1, 0));
+        vec3 right = toView(omw_TexCoord + rcpres * vec2(1, 0)) - pos;
+        vec3 up = pos - toView(omw_TexCoord + rcpres * vec2(0, -1));
+        vec3 down = toView(omw_TexCoord + rcpres * vec2(0, 1)) - pos;
+
+        vec3 dx = length(left) < length(right) ? left : right;
+        vec3 dy = length(up) < length(down) ? up : down;
+
+        vec3 normal = normalize(cross(dy, dx));
+        dy = normalize(cross(dx, normal));
+        dx = normalize(dx);
+
+        vec3 rnd = texture2D(noise, omw_TexCoord / rcpres / 8.0).xyz * 2.0 - 1.0;
+
+        float AO = 0.0, amount = 0.0;
+        for (int j = 0; j < N; j++)
+        {
+            vec3 ray, occ;
+
+            ray = reflect(dirs(j) * max_ray_radius, rnd);
+
+            ray *= sign(ray.z);
+            ray = dx * ray.x + dy * ray.y + normal * ray.z;
+            float weight = dot(normalize(ray), normal);
+
+            occ = toView(fromView(pos + ray));
+            // FIXME: depth sampling should be linear
+            // float diff = pos.z + ray.z - occ.z;
+            // Bias occ.z to avoid self-occlusion errors from point sampling depth
+            float diff = pos.z + ray.z - 1.00025 * occ.z;
+
+            amount += weight;
+            AO += weight * step(0.0, diff) * exp2(-diff / occlusion_falloff);
+        }
+
+        omw_FragColor = vec4(AO / amount, pack2(pos.z / depth_scale), 1.0);
+    }
+}
+
+fragment smartblur {
+    omw_In vec2 omw_TexCoord;
+
+    #define M 12
+    vec2 taps(int i)
+    {
+        if(i==0) return vec2(-0.695914,0.457137);
+        else if(i==1) return vec2(-0.203345,0.620716);
+        else if(i==2) return vec2(0.96234,-0.194983);
+        else if(i==3) return vec2(0.473434,-0.480026);
+        else if(i==4) return vec2(0.507431,0.064425);
+        else if(i==5) return vec2(0.89642,0.412458);
+        else if(i==6) return vec2(-0.32194,-0.932615);
+        else if(i==7) return vec2(-0.791559,-0.59771);
+        else if(i==8) return vec2(-0.326212,-0.40581);
+        else if(i==9) return vec2(-0.840144,-0.07358);
+        else if(i==10) return vec2(0.519456,0.767022);
+        else if(i==11) return vec2(0.185461,-0.893124);
+        else return vec2(0.0);
+    }
+
+    float unpack2(vec2 f)
+    {
+        return f.x + ((f.y - 0.5) / 255.0);
+    }
+
+    void main()
+    {
+        vec4 data = omw_GetLastPass(omw_TexCoord); //FIXME: mirror
+        float total = data.r;
+        float depth = unpack2(data.gb);
+        float rev = blur_radius * (2.0*data.a - 1.0);
+        float amount = 1.0;
+        for (int i = 0; i < M; i++)
+        {
+            vec2 s_uv = omw_TexCoord + rcpres * taps(i) * rev;
+            vec3 s_data = omw_GetLastPass(s_uv).rgb; //FIXME: mirror
+            float s_depth = unpack2(s_data.gb);
+            float weight = exp2(-abs(depth - s_depth) / depth / blur_falloff);
+
+            amount += weight;
+            total += s_data.r * weight;
+        }
+
+        omw_FragColor = vec4(total / amount, data.gb, 1.0 - data.a);
+    }
+}
+
+fragment combine {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 scene = omw_GetLastShader(omw_TexCoord);
+
+        float lum = dot(scene.rgb, vec3(0.2125, 0.7154, 0.0721));
+        const float width = 0.3;
+        const float sigma = 1.0;
+        const float threshold = 0.7; // configurable
+        float f = pow((1.0 - (min(1.0,max(0.0, lum - threshold + width))) / (2.0 * width)), sigma);
+
+        float dist = length(toView(omw_TexCoord));
+        float fog = clamp((omw.fogFar - dist) / (omw.fogFar - omw.fogNear), 0.0, 1.0);
+        float final = fog * multiplier * omw_GetLastPass(omw_TexCoord).r * f;
+        vec3 result = mix(scene.rgb, omw.fogColor.rgb * (1.0-fog), final);
+
+        omw_FragColor = vec4(result, 1.0);
+    }
+}
+
+technique {
+    passes = ssao, smartblur, smartblur, combine;
+    description = "SSAO, high quality";
+    author = "Knu";
+    version = "1.0";
+}

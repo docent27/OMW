@@ -1,28 +1,18 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Ilya Zhuravlev <whatever@xyz.is>
-Date: Sun, 28 Apr 2019 18:16:37 -0400
-Subject: [PATCH] android: fix context being lost on app minimize
-
----
- apps/openmw/engine.cpp         | 8 ++++++++
- components/debug/debugging.cpp | 5 +++++
- 2 files changed, 13 insertions(+)
-
 diff --git a/apps/openmw/engine.cpp b/apps/openmw/engine.cpp
-index 012ab8f59..84b6d60b2 100644
+index 0de3f5e29..0d766d14d 100644
 --- a/apps/openmw/engine.cpp
 +++ b/apps/openmw/engine.cpp
-@@ -482,6 +482,9 @@ std::string OMW::Engine::loadSettings (Settings::Manager & settings)
-     return settingspath;
+@@ -545,6 +545,9 @@ void OMW::Engine::setSkipMenu (bool skipMenu, bool newGame)
+     mNewGame = newGame;
  }
  
 +// To share the viewer with Android interfaces
 +osg::ref_ptr<osgViewer::Viewer> g_viewer;
 +
- void OMW::Engine::createWindow(Settings::Manager& settings)
+ void OMW::Engine::createWindow()
  {
-     int screen = settings.getInt("screen", "Video");
-@@ -599,6 +602,9 @@ void OMW::Engine::createWindow(Settings::Manager& settings)
+     int screen = Settings::Manager::getInt("screen", "Video");
+@@ -681,6 +684,9 @@ void OMW::Engine::createWindow()
      mViewer->realize();
  
      mViewer->getEventQueue()->getCurrentEventState()->setWindowRectangle(0, 0, graphicsWindow->getTraits()->width, graphicsWindow->getTraits()->height);
@@ -32,21 +22,21 @@ index 012ab8f59..84b6d60b2 100644
  }
  
  void OMW::Engine::setWindowIcon()
-@@ -942,6 +948,8 @@ void OMW::Engine::go()
-         mEnvironment.limitFrameRate(frameTimer.time_s());
-     }
+@@ -1109,6 +1115,8 @@ void OMW::Engine::go()
+ 
+     luaWorker.join();
  
 +    g_viewer.release();
 +
      // Save user settings
-     settings.saveUser(settingspath);
- 
+     Settings::Manager::saveUser((mCfgMgr.getUserConfigPath() / "settings.cfg").string());
+     Settings::ShaderManager::get().save();
 diff --git a/components/debug/debugging.cpp b/components/debug/debugging.cpp
-index dfed077e3..75fca4e3c 100644
+index c46971d65..b34bc7a3c 100644
 --- a/components/debug/debugging.cpp
 +++ b/components/debug/debugging.cpp
-@@ -8,6 +8,8 @@
- #   include <windows.h>
+@@ -13,6 +13,8 @@
+ #include <components/windows.hpp>
  #endif
  
 +#include <osgViewer/Viewer>
@@ -54,24 +44,20 @@ index dfed077e3..75fca4e3c 100644
  namespace Debug
  {
  #ifdef _WIN32
-@@ -86,6 +88,8 @@ namespace Debug
-     }
+@@ -188,6 +190,8 @@ void setupLogging(const std::string& logDir, const std::string& appName, std::io
+ #endif
  }
  
 +extern osg::ref_ptr<osgViewer::Viewer> g_viewer;
 +
  int wrapApplication(int (*innerApplication)(int argc, char *argv[]), int argc, char *argv[],
-                    const std::string& appName, bool autoSetupLogging)
+                     const std::string& appName, bool autoSetupLogging)
  {
- #if defined _WIN32
-@@ -139,6 +143,7 @@ int wrapApplication(int (*innerApplication)(int argc, char *argv[]), int argc, c
+@@ -227,6 +231,7 @@ int wrapApplication(int (*innerApplication)(int argc, char *argv[]), int argc, c
      }
-     catch (std::exception& e)
+     catch (const std::exception& e)
      {
 +        g_viewer.release();
  #if (defined(__APPLE__) || defined(__linux) || defined(__unix) || defined(__posix))
          if (!isatty(fileno(stdin)))
  #endif
--- 
-2.28.0
-
